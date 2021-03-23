@@ -7,12 +7,12 @@ if(abs(vexRT[Ch3])>10  || abs(vexRT[Ch4])>10)
 {
 	SensorValue[Rencoder]=0;
 	SensorValue[Lencoder]=0;
-	motor[rightDriveBack]=(ddir*vexRT[Ch3]-(vexRT[Ch4]*.53));
-	motor[powerCD]=(ddir*vexRT[Ch3]-(vexRT[Ch4]*.53));
-	motor[rightDriveFrontMID]=(ddir*vexRT[Ch3]-(vexRT[Ch4]*.53));
-	motor[leftDriveBack]=(ddir*vexRT[Ch3]+(vexRT[Ch4]*.53));
-	motor[powerAB]=(ddir*vexRT[Ch3]+(vexRT[Ch4]*.53));
-	motor[leftDriveFrontMID]=(ddir*vexRT[Ch3]+(vexRT[Ch4]*.53));
+	motor[rightDriveBack]=(ddir*vexRT[Ch3]-(vexRT[Ch4]*.53))*.8;
+	motor[powerCD]=(ddir*vexRT[Ch3]-(vexRT[Ch4]*.53))*.8;
+	motor[rightDriveFrontMID]=(ddir*vexRT[Ch3]-(vexRT[Ch4]*.53))*.8;
+	motor[leftDriveBack]=(ddir*vexRT[Ch3]+(vexRT[Ch4]*.53))*.8;
+	motor[powerAB]=(ddir*vexRT[Ch3]+(vexRT[Ch4]*.53))*.8;
+	motor[leftDriveFrontMID]=(ddir*vexRT[Ch3]+(vexRT[Ch4]*.53))*.8;
 
 }
 //else if(abs(vexRT[Ch3])>10 || abs(vexRT[Ch4])>10&& vexRT[Btn5U]==1)
