@@ -1,5 +1,5 @@
 int bL,	bR,	l, cp, cm, mg, c, as;
-while(1){
+
 //#### DRIVE BASE ########################################################################
 if(vexRT[Ch3] > 15 || vexRT[Ch4] > 15 || vexRT[Ch3] < -15 || vexRT[Ch4] < -15) //JOYSTICK DEADBAND
 {
@@ -114,15 +114,12 @@ if (as==1)
 	else{}
 }
 else if(as==2)
-{
-	PL(1);
+{PL();
 	if(record==1){writeDebugStreamLine("PL();");}
-}
-else if(as==0)
-{
-	D(	bL,	bR,	l,cm, mg, c); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
-	if(record==1){writeDebugStreamLine("D(%d, %d, %d, %d, %d, %d);",	bL,	bR,	l, cm, mg, c);}
-	else{}
-}
-else{}
-}
+		}
+	else
+	{
+		D(	bL,	bR,	l,cm, mg, c); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+		if(record==1){writeDebugStreamLine("D(%d, %d, %d, %d, %d, %d);",	bL,	bR,	l, cm, mg, c);}
+		else{}
+	}
