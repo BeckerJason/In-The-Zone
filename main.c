@@ -51,6 +51,18 @@ TVoltage se;
 #include "functions.c"
 
 
+
+task VoltageCheck()
+{while(1)
+	{
+		//!!!!!!!!!! CHECK VOLTAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		pr.mult=PCheck(nImmediateBatteryLevel/1000.0);
+		se.mult=SCheck(SensorValue[BackUpBattery]/280.0);
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		wait1Msec(5000);
+	}
+}
+
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 /*                                                                           */
@@ -75,11 +87,11 @@ void pre_auton()
 
 	// All activities that occur before the competition starts
 	// Example: clearing encoders, setting servo positions, ...
-	 SensorType[in1] = sensorNone;
-  wait1Msec(1000);
-  //Reconfigure Analog Port 8 as a Gyro sensor and allow time for ROBOTC to calibrate it
-  SensorType[in1] = sensorGyro;
-  wait1Msec(2000);
+	SensorType[in1] = sensorNone;
+	wait1Msec(1000);
+	//Reconfigure Analog Port 8 as a Gyro sensor and allow time for ROBOTC to calibrate it
+	SensorType[in1] = sensorGyro;
+	wait1Msec(2000);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -93,51 +105,53 @@ void pre_auton()
 /*---------------------------------------------------------------------------*/
 #include "ArcTurn.c";
 task autonomous()
-{clearDebugStream();
+{clearTimer(T4);
+	startTask(VoltageCheck);
+	clearDebugStream();
 
 	//!!!!!!!!!! CHECK VOLTAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	pr.mult=PCheck(nImmediateBatteryLevel/1000.0);
 	se.mult=SCheck(SensorValue[BackUpBattery]/280.0);
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//while(1)
-//{Test(40,40, 1);
-//wait1Msec(2000);
-//Test(-40,40, 1);wait1Msec(2000);
-//}
-//#include "auto.c";
+	//while(1)
+	//{Test(40,40, 1);
+	//wait1Msec(2000);
+	//Test(-40,40, 1);wait1Msec(2000);
+	//}
+	//#include "auto.c";
 #include "Double Pickup Auto.c";
 
-
-//	M(8,50,0);
-//	SensorValue[Claw]=1;
-//motor[ConeGrab]=127;
-//wait1Msec(800);
-//M(5,50,0);
-//SensorValue[Claw]=0;
-//wait1Msec(100);
-//startTask(POTTop);
-//M(-8,50,0);
-//wait1Msec(300);
-//SensorValue[in1]=0;
-//T(-30,60);
-//wait1Msec(300);
-//M(24,60,1);
-//stopTask(POTStall);
-//motor[ConeGrab]=-127;
-//	wait1Msec(400);
-//	SensorValue[Claw]=1;	//drop cone
-//startTask(POTTop);
-//startTask(PistonUpAuto);
-//wait1Msec(200);
-//motor[ConeGrab]=0;
-//M(6,50,0);
-//	T(-60,60);
+	writeDebugStreamLine("%f",timer4);
+	//	M(8,50,0);
+	//	SensorValue[Claw]=1;
+	//motor[ConeGrab]=127;
+	//wait1Msec(800);
+	//M(5,50,0);
+	//SensorValue[Claw]=0;
+	//wait1Msec(100);
+	//startTask(POTTop);
+	//M(-8,50,0);
+	//wait1Msec(300);
+	//SensorValue[in1]=0;
+	//T(-30,60);
+	//wait1Msec(300);
+	//M(24,60,1);
+	//stopTask(POTStall);
+	//motor[ConeGrab]=-127;
+	//	wait1Msec(400);
+	//	SensorValue[Claw]=1;	//drop cone
+	//startTask(POTTop);
+	//startTask(PistonUpAuto);
+	//wait1Msec(200);
+	//motor[ConeGrab]=0;
+	//M(6,50,0);
+	//	T(-60,60);
 
 
 
 	//ArcTurn(10,45,'f','l');
-//ArcTurn(10,45,'f','r');
+	//ArcTurn(10,45,'f','r');
 	while(1){}
 }
 
@@ -154,14 +168,14 @@ task autonomous()
 
 task usercontrol()
 {int mgPOS=0;
-stopTask(autonomous);
-//SensorValue[kicker]=0;
- SensorValue[GLED]=1; SensorValue[RLED]=0;
-float Loffset, Roffset, speed,dir;
-int ddir=1;
-startTask(POTTop);
-while (true)
+	stopTask(autonomous);
+	//SensorValue[kicker]=0;
+	SensorValue[GLED]=1; SensorValue[RLED]=0;
+	float Loffset, Roffset, speed,dir;
+	int ddir=1;
+	startTask(POTTop);
+	while (true)
 	{
-	#include "Driver.c";
-		}
+#include "Driver.c";
+	}
 }
