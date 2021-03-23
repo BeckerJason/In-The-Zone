@@ -1,4 +1,4 @@
-//motor[ConeGrab]=127;
+ //motor[ConeGrab]=127;
 //SensorValue[Claw]=1;
 //wait1Msec(500);
 //M(34,75,1);//(float dist, int vel, int MobileGoal)
@@ -94,14 +94,99 @@
 ////M(-12,75,0);
 ////T(15,70);
 //BackUpWall();
+
+
+
+///////////////////////////////Code to grab 5&6 MG////////////////////////////////
+
+//M(4,40,0);
+//wait1Msec(200);
+//T(90,70);
+//motor[rightMG]=10;////These lines make sure the MG is Down
+//motor[leftMG]=10;///// Here too
+/////////////Move to get second mobile goals
+//wait1Msec(300);
+//M(20,70,1);
+//M(10,30,1);
+//motor[rightMG]=0;////These lines make sure the MG stops
+//motor[leftMG]=0;///// Here too
+//LineTrack(30,0);
+//M(3,70,1);
+//startTask(MGUpAuto);
+//wait1Msec(500);
+
+//////////////////////////////////////////AFTER GRABBING MG GRAB CONE AND NEXT MG
+//////////NEW CODE////////
+//	M(5,50,0);
+//	stopTask(POTStall);
+//	SensorValue[Claw]=1;
+//motor[ConeGrab]=127;
+//wait1Msec(800);
+//M(4,70,0);
+//SensorValue[Claw]=0;
+//wait1Msec(200);
+//startTask(POTTop);
+//wait1Msec(800);
+//M(-7,50,0);
+//wait1Msec(300);
+//SensorValue[in1]=0;
+//T(-30,80);
+//wait1Msec(300);
+//M(26,60,1);
+//stopTask(POTStall);
+//motor[ConeGrab]=-60;
+//	wait1Msec(1000);
+//	SensorValue[Claw]=1;	//drop cone
+//	wait1Msec(200);
+//startTask(POTTop);
+//wait1Msec(400);
+//M(1,40,1);
+//startTask(PistonUpAuto);
+//wait1Msec(200);
+//motor[ConeGrab]=0;
+//M(4,50,0);
+//wait1Msec(300);
+//	T(-60,60);
+////////NEW CODE/////
+//////////////////////FACING THE SCORING ZONE
+//LineTrack(30,1);
+//////Move to Scoring zone
+//M(45,80,0);
+//ForwardToPole();
+//T(35,50);
+//SensorValue[piston]=0;
+//M(-8,70,0);
+//wait1Msec(200);
+//SensorValue[in1]=0;
+//T(-90, 60);
+//M(22,60,0);
+//wait1Msec(200);
+//SensorValue[in1]=0;
+//T(90,60);
+//SensorValue[piston]=1;
+//M(1,40,1);
+//ForwardToPole();
+//startTask(MGDown);
+//while(SensorValue[MGlimitD]==0){}
+M(-8,70,0); //////////////////////////5 AND 6 MG SCORED/////////////////////////////////////
+
+
+
+
+///////////////////////////////Code for last 2 MG////////////////////////////////////////////////////
+wait1Msec(300);
+T(105,60);
+wait1Msec(300);
+M(-2,70,1);
+BackUpWall();
 M(4,40,0);
 wait1Msec(200);
-T(90,70);
+T(90,50);
 motor[rightMG]=10;////These lines make sure the MG is Down
 motor[leftMG]=10;///// Here too
 ///////////Move to get second mobile goals
 wait1Msec(300);
-M(20,70,1);
+M(16,70,1);
 M(10,30,1);
 motor[rightMG]=0;////These lines make sure the MG stops
 motor[leftMG]=0;///// Here too
@@ -110,7 +195,7 @@ M(3,70,1);
 startTask(MGUpAuto);
 wait1Msec(500);
 
-
+////////////////////////AFTER GRABBING MG GRAB CONE AND NEXT MG
 ////////NEW CODE////////
 	M(5,50,0);
 	stopTask(POTStall);
@@ -129,12 +214,12 @@ T(-30,80);
 wait1Msec(300);
 M(26,60,1);
 stopTask(POTStall);
-motor[ConeGrab]=-60;
-	wait1Msec(1000);
+motor[ConeGrab]=-127;
+	wait1Msec(500);
 	SensorValue[Claw]=1;	//drop cone
-	wait1Msec(200);
+	wait1Msec(100);
 startTask(POTTop);
-wait1Msec(400);
+wait1Msec(600);
 M(1,40,1);
 startTask(PistonUpAuto);
 wait1Msec(200);
@@ -143,30 +228,7 @@ M(4,50,0);
 wait1Msec(300);
 	T(-60,60);
 //////NEW CODE/////
-
-
-
-//T(-10,50);
-//startTask(MGDown);
-//wait1Msec(500);
-//M(10,60,0);
-//startTask(MGUpAuto);
-//wait1Msec(500);
-//StopTask(MGUpAuto);
-//motor[rightMG]=-50;
-//motor[leftMG]=-50;
-//SensorValue[in1]=0;
-//wait1Msec(20);
-//T(-50,50);
-//startTask(MGUpAuto);
-//wait1Msec(500);
-//M(12,60,1);
-//startTask(MGUpAuto);//First Left MG Back pickup
-//while( SensorValue[MGlimit]==0){}
-//M(6,50,1);
-//startTask(PistonUpAuto);//Second MID MG RIGHT pickup
-//wait1Msec(500);
-//T(-35,50);
+////////////////////FACING THE SCORING ZONE
 LineTrack(30,1);
 ////Move to Scoring zone
 M(45,80,0);
@@ -186,4 +248,4 @@ M(1,40,1);
 ForwardToPole();
 startTask(MGDown);
 while(SensorValue[MGlimitD]==0){}
-M(-8,70,0);
+M(-8,70,0); //////////////////////////5 AND 6 MG SCORED//////////////////////////////////////////////////
