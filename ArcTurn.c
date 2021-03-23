@@ -1,4 +1,4 @@
-void ArcTurn(float degree, float radius, char FBD, char LRD)
+void ArcTurn(float degree, float radius, char FBD, char LRD) //fbd fwd bkwd  lrd left right
 {	playSoundFile("Skid.wav");
 	clearTimer(T1);
 	SensorValue[Rencoder]=0;
@@ -34,8 +34,8 @@ void ArcTurn(float degree, float radius, char FBD, char LRD)
 		//xR=(Rarcdist-abs(SensorValue[Rencoder]));
 		//speedL=(-35.0)*cos(16.0*abs(xL)/(abs(Larcdist)*3.14)+5.75)+30.0;//vel;
 		//speedR=(-35.0)*cos(16.0*abs(xR)/(abs(Rarcdist)*3.14)+5.75)+30.0;//vel;
-		speedL=4.5;
-		speedR=4.5;
+		speedL=4.75;
+		speedR=4.75;
 		speedL=dir*speedL*Lmult;
 		speedR=dir*speedR*Rmult;
 
