@@ -4,12 +4,6 @@ wait1Msec(1000);
 SensorType[in7] = sensorGyro;
 wait1Msec(2000);
 /////////////////////////////
-
-wait1Msec(150);
-//SensorValue[puncher]=0;
-//KillALL();
-break;
-
 if(DEBUG)
 {
 	alliance = 3;

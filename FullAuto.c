@@ -1,45 +1,59 @@
+//if (c==1)  //If the claw is open and you press or hold the button it will close
+//	{motor[roller]=-127;}
+//	else	if (c==2)	//when the button is released the claw remains open
+//	{motor[roller]=-25;}
+//	else if (c==3) //when the button is released the claw stays closed
+//	{motor[roller]=127;}
+//	else if (c==4)	//when the claw is closed and you press or hold the button it will open
+//	{motor[roller]=0;}
+//	else{}
+
 void FullAuto(){
-	C(1);//CLOSE CLAW TO GRAB PRE-LOAD
+	clearDebugStream();
 	SensorValue[in7]=0;		//Set gyro to 0
-	SensorValue[I2C_1]=0;		//set right arm encoder to 0
-	SensorValue[I2C_2]=0;		//set right arm encoder to 0
+	SensorValue[I2C_1]=0;		//set right base encoder to 0
+	SensorValue[I2C_2]=0;		//set left base encoder to 0
+		SensorValue[I2C_3]=0;		//set left arm encoder to 0
+	SensorValue[I2C_4]=0;		//set right arm encoder to 0
 	SensorValue[enc]=0;
 	clearTimer(T3);//
-	//C(1);
-	//wait1Msec(500);
-
-	liftCont(80);
-	CM(-120,127,0);
-
-	liftCont(10);
-	CM(0,127,1);
-	SensorValue[enc]=0;
-	CM(30,127,0);
-
+	C(2);
+//FB(10);
+//C(2);//CLOSE CLAW TO GRAB PRE-LOAD
+	wait1Msec(100);
+	L(250, 65,0);
+	/////////////////////////////////////CM(0,127,1);
+	/////////////////////////////////////////CM(30,127,0);
 	//MOVE 12 INCHES TO POLL IN FORWARD DIRECTION AT 80 SPEED
-	M(10,1,65);
-	liftCont(-100);
-
+Mover(14, 0); //dist dir mg(1=y 0=n)
+	//M(12,1,65);
+	liftCont(-50);
 	wait1Msec(500);
-	liftCont(0);
-
-	C(0);
+	C(3);
+	liftCont(65);
+	FB(70);	////4 bar stay up
 	wait1Msec(500);
-	M(6,-1,80);
+	liftCont(20);
+	C(4);
+	FB(10);
+	//wait1Msec(500);
+	Mover(-6,0);
 
 	//TURN TO MOBILE GOAL
 	SensorValue[gyro]=0;
-	T(AllianceColor*60,100,20);
+	//Turning(AllianceColor*60);
+	T(AllianceColor*50,100,20);
 
 	writeDebugStreamLine("%f",SensorValue[gyro]);
 
 
-	motor[MG]=-127;
-	wait1Msec(1000);
-	motor[MG]=-50;
-	M(70,1,100);
-
 	motor[MG]=127;
+	wait1Msec(1000);
+	motor[MG]=50;
+	Mover(70,1);
+	//Move(100,70);
+
+	motor[MG]=-127;
 	wait1Msec(2500);
 
 	//M(3,-1,127);	//Move robot back so it doesnt hit any cones
@@ -171,7 +185,8 @@ void FullAuto(){
 		motor[RM] = 0;
 		motor[R1] = 0;
 
-		motor[ClawM]=15;
+		motor[fb1]=15;
+		motor[fb2]=15;
 
 		if (AllianceColor==1){
 			motor[RM] = 70*se.mult;		//Turn to face scoring zone
@@ -186,7 +201,7 @@ void FullAuto(){
 
 		wait1Msec(1500);
 		motor[MG]=-127;
-		SensorValue[claw]=0;//mobile goal out half way
+		////////////////SensorValue[claw]=0;//mobile goal out half way
 		motor[LM] = 0;
 		motor[L1] = 0;
 		motor[RM] = 0;
@@ -225,8 +240,8 @@ void FullAuto(){
 		motor[RM] = 0;
 		motor[R1] = 0;
 
-		motor[ClawM]=15;
-
+		motor[fb1]=15;
+motor[fb2]=15;
 
 		if(AllianceColor==1){
 			motor[RM] = 120*se.mult;		//Turn to face scoring zone
@@ -301,8 +316,8 @@ void FullAuto(){
 		motor[RM] = 0;
 		motor[R1] = 0;
 
-		motor[ClawM]=15;
-
+		motor[fb1]=15;
+motor[fb2]=15;
 
 		if(AllianceColor==1){
 			motor[RM] = 120*se.mult;		//Turn to face scoring zone
