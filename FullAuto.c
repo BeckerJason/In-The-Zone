@@ -52,13 +52,13 @@ void FullAuto(){
 	int po;
 	if (AllianceColor==1)
 	{po=60;}
-else{po=-60;}
-		while(abs(SensorValue[in7])*0.973>520){
-			motor[LM] = -po*pr.mult;
-			motor[L1] = -po*pr.mult;
-			motor[RM] = po*pr.mult;
-			motor[R1] = po*pr.mult;
-		}
+	else{po=-60;}
+	while(abs(SensorValue[in7])*0.973>520){
+		motor[LM] = -po*pr.mult;
+		motor[L1] = -po*pr.mult;
+		motor[RM] = po*pr.mult;
+		motor[R1] = po*pr.mult;
+	}
 
 
 
@@ -131,7 +131,7 @@ else{po=-60;}
 
 
 	SensorValue[gyro]=0;
-	T(AllianceColor*92,127,25);		//Turn to face preloads
+	T(AllianceColor*86,127,25);		//Turn to face preloads
 
 	wait1Msec(500);
 	motor[LM] = 60;				///Move forward to hit the wall
@@ -141,7 +141,7 @@ else{po=-60;}
 	wait1Msec(500);
 
 	//IR2Sense();//Correct distance from preloads
-	M(3,-1,127);
+	M(3,-1,70);
 
 
 
@@ -211,15 +211,15 @@ else{po=-60;}
 	{	PL(7);
 
 		SensorValue[gyro]=0;
-		T(AllianceColor*100,127,25);						//Changed from 92 to 100 during far zone programming
+		T(AllianceColor*105,127,55);						//Changed from 92 to 100 during far zone programming
 
-		M(38,1, 127);
+		M(51,1, 127);
 		//Changed from 34 to 36during far zone programming
-		motor[LM] = -50;
-		motor[L1] = -50;
-		motor[RM] = -50;
-		motor[R1] = -50;
-		wait1Msec(100);
+		motor[LM] = -40;
+		motor[L1] = -40;
+		motor[RM] = -40;
+		motor[R1] = -40;
+		wait1Msec(150);
 		motor[LM] = 0;
 		motor[L1] = 0;
 		motor[RM] = 0;
@@ -229,16 +229,25 @@ else{po=-60;}
 
 
 		if(AllianceColor==1){
-			motor[RM] = 100*se.mult;		//Turn to face scoring zone
-			motor[R1] = 100*se.mult;
-			motor[LM] = 50*se.mult;
-			motor[L1] = 50*se.mult;}
-		else{motor[RM] = 50*se.mult;		//Turn to face scoring zone
-			motor[R1] = 50*se.mult;
-			motor[LM] = 100*se.mult;
-			motor[L1] = 100*se.mult;}
+			motor[RM] = 120*se.mult;		//Turn to face scoring zone
+			motor[R1] = 120*se.mult;
+			motor[LM] = -30*se.mult;
+			motor[L1] = -30*se.mult;}
+		else{motor[RM] = -30*se.mult;		//Turn to face scoring zone
+			motor[R1] = -30*se.mult;
+			motor[LM] = 120*se.mult;
+			motor[L1] = 120*se.mult;}
+
+
+
+		wait1Msec(400);
 		motor[MG]=-127;								//mobile goal out half way
-		wait1Msec(600);
+		wait1Msec(400);
+
+		motor[RM] = 100;
+		motor[R1] = 100;
+
+
 
 		motor[MG]=5;
 		motor[LM] = 100*se.mult;		//Move to scoring zone
@@ -246,7 +255,7 @@ else{po=-60;}
 		wait1Msec(1000);
 		C(0);								//Open claw to score
 		motor[MG]=-127;			//Mobile goal down all the way
-		wait1Msec(2500);
+		wait1Msec(1000);
 
 
 		motor[LM] = 80;
@@ -263,7 +272,7 @@ else{po=-60;}
 		motor[L1] = -120;
 		motor[RM] = -120;
 		motor[R1] = -120;
-		wait1Msec(3000);
+		wait1Msec(500);
 		while(1)
 		{
 			motor[LM] = 0;
@@ -272,6 +281,116 @@ else{po=-60;}
 			motor[R1] = 0;
 			motor[MG]=	0;
 		}
+	}
+	else if(NearOrFar==2)
+	{
+		PL(4);
+
+		SensorValue[gyro]=0;
+		T(AllianceColor*105,127,55);						//Changed from 92 to 100 during far zone programming
+
+		M(50,1, 127);
+		//Changed from 34 to 36during far zone programming
+		motor[LM] = -40;
+		motor[L1] = -40;
+		motor[RM] = -40;
+		motor[R1] = -40;
+		wait1Msec(150);
+		motor[LM] = 0;
+		motor[L1] = 0;
+		motor[RM] = 0;
+		motor[R1] = 0;
+
+		motor[ClawM]=15;
+
+
+		if(AllianceColor==1){
+			motor[RM] = 120*se.mult;		//Turn to face scoring zone
+			motor[R1] = 120*se.mult;
+			motor[LM] = -30*se.mult;
+			motor[L1] = -30*se.mult;}
+		else{motor[RM] = -30*se.mult;		//Turn to face scoring zone
+			motor[R1] = -30*se.mult;
+			motor[LM] = 120*se.mult;
+			motor[L1] = 120*se.mult;}
+
+
+
+		wait1Msec(400);
+		motor[MG]=-127;								//mobile goal out half way
+		wait1Msec(400);
+
+		motor[RM] = 100;
+		motor[R1] = 100;
+
+
+
+		motor[MG]=5;
+		motor[LM] = 100*se.mult;		//Move to scoring zone
+		motor[L1] = 100*se.mult;
+		wait1Msec(1000);
+		C(0);								//Open claw to score
+		motor[MG]=-127;			//Mobile goal down all the way
+		wait1Msec(1000);
+
+
+		motor[LM] = 80;
+		motor[L1] = 80;
+		motor[RM] = 80;
+		motor[R1] = 80;
+		wait1Msec(300);
+
+		while (SensorValue[pot]>1850)//Lift mobile goal slightly to pull out
+		{motor[MG]=90;}
+		motor[MG]=10;
+		wait1Msec(500);
+		motor[LM] = -120;
+		motor[L1] = -120;
+		motor[RM] = -120;
+		motor[R1] = -120;
+		wait1Msec(1200);
+		motor[LM] = 0;
+		motor[L1] = 0;
+		motor[RM] = 0;
+		motor[R1] = 0;
+		motor[MG]=	0;
+
+		Turn(-1,130);
+
+		wait1Msec(200);
+
+		M(11,1, 127);
+
+		wait1Msec(200);
+
+		SensorValue[gyro]=0;
+		Turn(-1,30);
+
+		wait1Msec(200);
+
+		SensorValue[gyro]=0;
+		motor[MG]=-127;
+
+		wait1Msec(400);
+
+		M(48,1, 127);
+
+		wait1Msec(200);
+
+		motor[MG]=127;
+
+		wait1Msec(1000);
+
+		M(45,-1, 127);
+
+		wait1Msec(600);
+		SensorValue[gyro]=0;
+		Turn(-1,180);
+		motor[MG]=-127;
+
+
+
+
 	}
 	else{while(1){}}
 

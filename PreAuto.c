@@ -148,7 +148,7 @@ if(DEBUG)
 			}
 			else if (count == 2)
 			{
-				displayLCDCenteredString(0, "Autonomous: 3");
+				displayLCDCenteredString(0, "Autonomous: F2r");
 				displayLCDCenteredString(1, "<D> <ENTER> <U>");
 			}
 			else if (count == 3)

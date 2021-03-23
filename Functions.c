@@ -347,11 +347,11 @@ void PL(int cones)// Primary Voltage Mult, Secondary Voltage Mult
 		motor[ClawM]=15*pr.mult;
 		//while sonar sees cone {go up
 
-		while (SensorValue[enc]<350&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
+		while (SensorValue[enc]<280&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
 		{
 			motor[ClawM]=-127;
 		}
-		motor[ClawM]=15;
+		motor[ClawM]=25;
 		writeDebugStreamLine("1");
 		/*if (abs(SensorValue[I2C_1])<abs(SensorValue[I2C_1])+10)
 		{motor[leftArm] = 127*pr.mult*.9;
@@ -380,7 +380,7 @@ void PL(int cones)// Primary Voltage Mult, Secondary Voltage Mult
 		//{motor[ClawM]=-127*pr.mult;}
 		/*while (SensorValue[enc]<450&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
 		{
-			motor[ClawM]=127;
+		motor[ClawM]=127;
 		}
 		writeDebugStreamLine("3");
 		wait1Msec(75);*/
@@ -435,18 +435,18 @@ void PL(int cones)// Primary Voltage Mult, Secondary Voltage Mult
 				motor[rightArm2] =-100;}
 		}
 		else if(x==cones-1)
-			{
-				motor[leftArm1] =-100;		//This else  statement was added durng far zone programming
-				motor[leftArm2] = -100;
-				motor[rightArm1] =-100;
-				motor[rightArm2] =-100;
-				wait1Msec(300);
-				motor[leftArm1] =10;
-				motor[leftArm2] = 10;
-				motor[rightArm1] =10;
-				motor[rightArm2] =10;
-				SensorValue[claw]=1;
-				}
+		{
+			motor[leftArm1] =-100;		//This else  statement was added durng far zone programming
+			motor[leftArm2] = -100;
+			motor[rightArm1] =-100;
+			motor[rightArm2] =-100;
+			wait1Msec(300);
+			motor[leftArm1] =10;
+			motor[leftArm2] = 10;
+			motor[rightArm1] =10;
+			motor[rightArm2] =10;
+			SensorValue[claw]=1;
+		}
 		//claw down preset
 
 	}
@@ -1081,10 +1081,10 @@ void FollowLine(int Initial)
 	if (LineMath < 0){left = -1; right =  1; 	}//TURN LEFT
 	else if (LineMath > 0){left = 1; right = -1;	}//TURN RIGHT
 	else{left =  1; right =  1;  }//MOVE STRAIGHT
-		motor[LM]     = Initial+(Speed*left);
-    motor[L1]      = Initial+(Speed*left);
-    motor[RM]    = Initial+(Speed*right);
-    motor[R1]     = Initial+(Speed*right);
+	motor[LM]     = Initial+(Speed*left);
+	motor[L1]      = Initial+(Speed*left);
+	motor[RM]    = Initial+(Speed*right);
+	motor[R1]     = Initial+(Speed*right);
 }
 
 
@@ -1094,3 +1094,60 @@ void FollowLine(int Initial)
 //Claw motor up at 127				:: CM(300,127,pr.mult);
 //Claw close									:: C(1);
 //Move Robot to 4 & 2.5			 	:: MoveToPosition(4.0,2.5,127,127,20,0);
+void Move(int Vel, float dist)
+{clearTimer(T3);
+
+	int fullRotation = (360); //12.56 inches in distance with 4 inch wheel
+	float oneFoot = (.9*fullRotation); //oneFoot = 12 inches or 343.95
+	float oneInch= oneFoot/12;
+	float tile = 2 * oneFoot;
+	int count=oneInch*dist;
+	int dir;
+	SensorValue[Renc]=0;
+	SensorValue[Lenc]=0;
+	if(Vel<0){dir=-1;}
+	else {dir=1;}
+	int Roffset, Loffset;
+	int x, speed;
+	wait1Msec(20);
+	while (abs(SensorValue[Lenc])<count&time1(T3)<4000)
+	{x=dir*count-SensorValue[Lenc];
+		//speed=abs((80*x)/50);	//-100*cos(x/(count/5))/2+100/2;
+		speed=-(105/2)*cos((16*x)/(count*PI))+57.5;
+		if (abs(SensorValue[Renc])>abs(SensorValue[Lenc])){Loffset=0; Roffset=-dir*5;}
+		else if (abs(SensorValue[Renc])<abs(SensorValue[Lenc])){Loffset=-dir*5; Roffset=0;}
+		else{Loffset=0; Roffset=0;}
+
+		motor[LM] = dir*speed*se.mult+Loffset;
+		motor[L1] = dir*speed*se.mult+Loffset;
+		motor[RM] = dir*speed*se.mult+Roffset;
+		motor[R1] = dir*speed*se.mult+Roffset;
+
+	}
+	//wait1Msec(5);
+	//dir=-dir
+	//	while (abs(SensorValue[Lenc])>count&time1(T3)<4000)
+	//{x=dir*count-SensorValue[Lenc];
+	//	//speed=abs((80*x)/50);	//-100*cos(x/(count/5))/2+100/2;
+	//	speed=-35*cos((20*x)/(count*PI))+75;
+	//	if (abs(SensorValue[Renc])>abs(SensorValue[Lenc])){Loffset=0; Roffset=-dir*5;}
+	//	else if (abs(SensorValue[Renc])<abs(SensorValue[Lenc])){Loffset=-dir*5; Roffset=0;}
+	//	else{Loffset=0; Roffset=0;}
+
+	//	motor[LM] = dir*speed*se.mult+Loffset;
+	//	motor[L1] = dir*speed*se.mult+Loffset;
+	//	motor[RM] = dir*speed*se.mult+Roffset;
+	//	motor[R1] = dir*speed*se.mult+Roffset;
+
+	//}
+	motor[LM] = -dir*5;
+	motor[L1] = -dir*5;
+	motor[RM] = -dir*5;
+	motor[R1] = -dir*5;
+	wait1Msec(50);
+
+	motor[LM] = 0;
+	motor[L1] = 0;
+	motor[RM] = 0;
+	motor[R1] = 0;
+}

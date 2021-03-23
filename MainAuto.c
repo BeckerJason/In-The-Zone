@@ -17,6 +17,9 @@ FullAuto();
 		while ( autonomousN == 2 ) // BEGIN AUTONOMOUS 3 CODE
 		{
 			//BlueAuto3 ( ) ;
+						AllianceColor=1;	//1 for Blue
+		NearOrFar=2;
+FullAuto();
 		}
 		while ( autonomousN == 3 ) // BEGIN AUTONOMOUS 4 CODE
 		{
@@ -47,6 +50,9 @@ FullAuto();
 		while ( autonomousN == 2 ) // BEGIN AUTONOMOUS 3 CODE
 		{
 			//RedAuto3 ( ) ;
+								AllianceColor=-1;	//1 for Blue
+		NearOrFar=2;
+FullAuto();
 		}
 		while ( autonomousN == 3 ) // BEGIN AUTONOMOUS 4 CODE
 		{

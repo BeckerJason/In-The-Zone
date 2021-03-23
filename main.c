@@ -63,13 +63,14 @@ TPositionRecord initial;
 #include "vex.c"
 void pre_auton()
 {	bStopTasksBetweenModes = true;
-stopTask(autonomous);
-#include "PreAuto.c";
+	stopTask(autonomous);
+//#include "PreAuto.c";
 }
 
 
 task autonomous()
-{C(1);
+{
+	C(1);
 	clearDebugStream();
 	//!!!!!!!!!! CHECK VOLTAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	pr.mult=PCheck(nImmediateBatteryLevel/1000.0);
@@ -90,11 +91,12 @@ task autonomous()
 	///ALWAYS GYRO*0.973
 	//#include "TestAuto.c";
 	//#include "NearZone.c";
-		//#include "RedNearZone.c";
+	//#include "RedNearZone.c";
 #include "MainAuto.c"
 }
 task usercontrol()
 {stopTask(autonomous);
+
 	//!!!!!!!!!! CHECK VOLTAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	pr.mult=PCheck(nImmediateBatteryLevel/1000.0);
 	se.mult=SCheck(SensorValue[BackUpBattery]/280.0);
