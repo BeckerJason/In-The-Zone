@@ -3,8 +3,8 @@ int bL,	bR,	l, cp, cm, mg, c, as;
 //#### DRIVE BASE ########################################################################
 if(vexRT[Ch3] > 10 || vexRT[Ch4] > 10 || vexRT[Ch3] < -10 || vexRT[Ch4] < -10) //JOYSTICK DEADBAND
 {
-	bL = vexRT[Ch3]*sm + vexRT[Ch4]*sm;		//Base Left Side
-	bR = vexRT[Ch3]*sm- vexRT[Ch4]*sm;		//Base Right Side
+	bL = vexRT[Ch3]*pm + vexRT[Ch4]*pm;		//Base Left Side
+	bR = vexRT[Ch3]*pm- vexRT[Ch4]*pm;		//Base Right Side
 }
 else
 {
@@ -16,7 +16,7 @@ else
 //~~~~ LIFT VALUES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if(vexRT[Ch2] > 15 || vexRT[Ch2] < -15)
 {
-	l = vexRT[Ch2]*pm; //Lift Motors
+	l = vexRT[Ch2]*sm; //Lift Motors
 }
 else
 {
