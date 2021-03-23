@@ -4,7 +4,6 @@ float Batt=MainBattery/1000; //Division by 1000 to get true voltage value of bat
 PMult=PCheck(Batt); //Create Multiplier Based On Battery Voltage
 
 int bL,	bR,	l, cp, cm, mg, c;
-
 //#### DRIVE BASE ########################################################################
 if(vexRT[Ch3] > 10 || vexRT[Ch4] > 10 || vexRT[Ch3] < -10 || vexRT[Ch4] < -10) //JOYSTICK DEADBAND
 {
@@ -76,4 +75,5 @@ else
 if (vexRT[Btn5U]==1){c=1;} //Claw Close
 else{c=0;}//Claw Open
 //########################################################################
-Do(	bL,	bR,	l, cp, cm, mg, c); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+DoB(	bL,	bR); 				//Base Left Side, Base Right Side
+AoB(l, cp, cm, mg, c);	// Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
