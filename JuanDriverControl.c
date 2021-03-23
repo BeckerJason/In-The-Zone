@@ -1,7 +1,7 @@
 int bL,	bR,	l, cp, cm, mg, c, as;
 
 //#### DRIVE BASE ########################################################################
-if(vexRT[Ch3] > 10 || vexRT[Ch4] > 10 || vexRT[Ch3] < -10 || vexRT[Ch4] < -10) //JOYSTICK DEADBAND
+if(vexRT[Ch3] > 15 || vexRT[Ch4] > 15 || vexRT[Ch3] < -15 || vexRT[Ch4] < -15) //JOYSTICK DEADBAND
 {
 	bL = vexRT[Ch3]*pm + vexRT[Ch4]*pm;		//Base Left Side
 	bR = vexRT[Ch3]*pm- vexRT[Ch4]*pm;		//Base Right Side
