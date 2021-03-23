@@ -3,6 +3,7 @@
 #pragma config(Sensor, dgtl1,  claw1,          sensorDigitalOut)
 #pragma config(Sensor, dgtl2,  Renc,           sensorQuadEncoder)
 #pragma config(Sensor, dgtl4,  push,           sensorDigitalOut)
+#pragma config(Sensor, dgtl5,  jumper,           sensorDigitalIn)
 #pragma config(Sensor, dgtl9,  claw2,          sensorDigitalOut)
 #pragma config(Sensor, dgtl10, limit,          sensorTouch)
 #pragma config(Sensor, dgtl11, Lenc,           sensorQuadEncoder)
@@ -18,7 +19,7 @@
 
 ////    Jason Becker    ////
 //// VCAT Robotics 2018 ////
-
+#pragma DebuggerWindows("debugStream")
 #pragma platform(VEX2)
 #pragma competitionControl(Competition)
 #include "CompensationCheck.c";
@@ -29,7 +30,7 @@ typedef struct
 }MOGO;
 MOGO mobi;
 /////////////////////// Mobile Goal Class//////////////////////////////////
-
+int dr, dl, mg, c, p;
 #include "Tasks.c"
 
 //VVVVVVVVVVVVVVVVVVVVVV Voltage Check Class Structure VVVVVVVVVVVVVVVV
@@ -69,9 +70,22 @@ task autonomous()
 
 task usercontrol()
 {
-	while(1)
+	startTask(runD);
+	if (jumper == 1)
 	{
-		//writeDebugStreamLine(" %d",SensorValue[gyro]);
-#include "Drive.c";
+		while (1)
+		{
+			writeDebugStreamLine("D(%d,%d,%d,%d,%d);", dr, dl, mg, c, p);
+			D(dr, dl, mg, c, p);
+
+		}
 	}
+	else
+	{
+	}
+	while (1)
+	{
+		D(dr, dl, mg, c, p);
+	}
+}
 }

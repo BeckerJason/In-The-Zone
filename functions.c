@@ -118,3 +118,30 @@ void Grab(int val)
 
 void Pusher(int val)
 {SensorValue[push]=val;}
+
+
+
+
+D(int dr, int dl, int mg, int c,int p)
+{
+	clearTimer[T3];
+	motor[RM] = dr;
+	motor[R1] = dr;
+	motor[R2] = dr;
+	motor[LM] = dl;
+	motor[L2] = dl;
+	motor[L1] = dl;
+
+	motor[MG1] = mg;
+	motor[MG2] = mg;
+
+	SensorValue[claw1] = c;
+	SensorValue[claw2] = c;
+
+
+	SensorValue[push] = p;
+
+
+
+	while (time1(T3) < 20) {}
+}
