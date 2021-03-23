@@ -28,12 +28,12 @@ liftCont(20);
 	/////////////////////////////////////CM(0,127,1);
 	/////////////////////////////////////////CM(30,127,0);
 	//MOVE 12 INCHES TO POLL IN FORWARD DIRECTION AT 80 SPEED
-Mover(10, 1); //dist dir mg(1=y 0=n)
-	//M(12,1,65);
+//Mover(10, 1); //dist dir mg(1=y 0=n)
+	M(5,1,65);
 //while(SensorValue[Rarm]>250)
 //{	liftCont(-20);}
 liftCont(0);
-wait1Msec(400);
+wait1Msec(700);
 	C(3);
 	liftCont(65);
 	wait1Msec(250);
@@ -46,6 +46,7 @@ wait1Msec(400);
 	FB(20);
 	//wait1Msec(500);
 	Mover(-6,0);
+	wait1Msec(200);
 	liftCont(0);
 	//TURN TO MOBILE GOAL
 	SensorValue[gyro]=0;
@@ -57,7 +58,7 @@ wait1Msec(400);
 	wait1Msec(500);
 	mobi.val=2;//MG full speed
 	startTask(MGGM);
-	wait1Msec(750);
+	//wait1Msec(750);
 	Mover(120,1);
 	//Move(100,70);
 	mobi.val=-1;
@@ -137,7 +138,7 @@ wait1Msec(400);
 	}
 
 	//get close to the line
-	M(9,-1,100);
+	M(7,-1,100);
 
 	motor[LM] = 15;
 	motor[L1] = 15;
@@ -154,14 +155,14 @@ wait1Msec(400);
 	T(AllianceColor*86,127,25);		//Turn to face preloads
 
 	wait1Msec(500);
-	motor[LM] = 60;				///Move forward to hit the wall
-	motor[L1] = 60;
-	motor[RM] = 60;
-	motor[R1] = 60;
-	wait1Msec(750);
+	motor[LM] = 40;				///Move forward to hit the wall
+	motor[L1] = 40;
+	motor[RM] = 40;
+	motor[R1] = 40;
+	wait1Msec(1250);
 
 	//IR2Sense();//Correct distance from preloads
-	M(3,-1,70);
+	M(5,-1,70);
 
 
 
@@ -226,7 +227,7 @@ wait1Msec(400);
 		wait1Msec(2000);
 
 
-		M(7,-1, 127);
+		M(4,-1, 127);
 		while(1)
 		{
 			motor[LM] = 0;
@@ -241,7 +242,7 @@ wait1Msec(400);
 	{	PL(7);
 
 		SensorValue[gyro]=0;
-				T(AllianceColor*92,127,25);						//Changed from 92 to 100 during far zone programming
+				T(AllianceColor*100,127,25);						//Changed from 92 to 100 during far zone programming
 
 		M(32,1, 127);								//Changed from 34 to 36during far zone programming
 		motor[LM] = -50;
@@ -276,10 +277,10 @@ wait1Msec(400);
 			motor[LM] = 127*se.mult;
 			motor[L1] = 127*se.mult;
 			wait1Msec(1500);
-			motor[RM] =50*se.mult;		//keep base forward
-			motor[R1] = 50*se.mult;
-			motor[LM] = 50*se.mult;
-			motor[L1] = 50*se.mult;
+			motor[RM] =65*se.mult;		//keep base forward
+			motor[R1] = 65*se.mult;
+			motor[LM] = 65*se.mult;
+			motor[L1] = 65*se.mult;
 		motor[roller]=127;				//spin cone out to release top of stack
 		wait1Msec(300);
 		mobi.val=3;
@@ -288,7 +289,7 @@ wait1Msec(400);
 		motor[L1] = 0;
 		motor[RM] = 0;
 		motor[R1] = 0;
-		wait1Msec(3000);				//waiting for mobile goal task to be done
+		wait1Msec(2000);				//waiting for mobile goal task to be done
 		motor[LM] = -40;				//move away from stack
 		motor[L1] = -40;
 		motor[RM] = -40;
@@ -298,7 +299,7 @@ wait1Msec(400);
 		startTask(MGGM);			//Move mobile goal back in
 		wait1Msec(500);
 
-		M(7,-1, 127);					//back out of mid zone
+		M(18,-1, 127);					//back out of mid zone
 
 
 //		//T(AllianceColor*105,127,55);						//Changed from 92 to 100 during far zone programming
@@ -482,6 +483,80 @@ motor[fb2]=15;
 
 
 
+	}
+		else if(NearOrFar==1)//Far zone code
+	{	PL(7);
+
+		SensorValue[gyro]=0;
+				T(AllianceColor*100,127,25);						//Changed from 92 to 100 during far zone programming
+
+		M(32,1, 127);								//Changed from 34 to 36during far zone programming
+		motor[LM] = -50;
+		motor[L1] = -50;
+		motor[RM] = -50;
+		motor[R1] = -50;
+		wait1Msec(50);
+		motor[LM] = 0;
+		motor[L1] = 0;
+		motor[RM] = 0;
+		motor[R1] = 0;
+
+		motor[fb1]=15;
+		motor[fb2]=15;
+
+		if (AllianceColor==1){
+			motor[RM] = 70*se.mult;		//Turn to face scoring zone
+			motor[R1] = 70*se.mult;
+			motor[LM] = 20*se.mult;
+			motor[L1] = 20*se.mult;}
+		else{
+			motor[RM] = 20*se.mult;		//Turn to face scoring zone
+			motor[R1] = 20*se.mult;
+			motor[LM] = 70*se.mult;
+			motor[L1] = 70*se.mult;}
+
+		wait1Msec(1500);
+		M(7,-1, 127);							//Back up to pole
+
+			motor[RM] =127*se.mult;		//drive into mid scoring zone
+			motor[R1] = 127*se.mult;
+			motor[LM] = 127*se.mult;
+			motor[L1] = 127*se.mult;
+			wait1Msec(1500);
+			motor[RM] =65*se.mult;		//keep base forward
+			motor[R1] = 65*se.mult;
+			motor[LM] = 65*se.mult;
+			motor[L1] = 65*se.mult;
+		motor[roller]=127;				//spin cone out to release top of stack
+		wait1Msec(300);
+		mobi.val=3;
+		startTask(MGGM);					//Start moving mobile goal out
+		motor[LM] = 0;
+		motor[L1] = 0;
+		motor[RM] = 0;
+		motor[R1] = 0;
+		wait1Msec(2000);				//waiting for mobile goal task to be done
+		motor[LM] = -40;				//move away from stack
+		motor[L1] = -40;
+		motor[RM] = -40;
+		motor[R1] = -40;
+		wait1Msec(400);
+		mobi.val=-1;
+		startTask(MGGM);			//Move mobile goal back in
+		wait1Msec(500);
+
+		M(18,-1, 127);					//back out of mid zone
+
+
+
+		while(1)
+		{
+			motor[LM] = 0;
+			motor[L1] = 0;
+			motor[RM] = 0;
+			motor[R1] = 0;
+			motor[MG]=	0;
+		}
 	}
 	else{while(1){}}
 

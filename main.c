@@ -23,7 +23,7 @@
 #pragma config(Motor,  port4,           fb1,           tmotorVex393_MC29, openLoop, reversed, encoderPort, I2C_5)
 #pragma config(Motor,  port5,           rightArm1,     tmotorVex393_MC29, openLoop, reversed, encoderPort, I2C_4)
 #pragma config(Motor,  port6,           leftArm1,      tmotorVex393_MC29, openLoop, encoderPort, I2C_3)
-#pragma config(Motor,  port7,           RM,            tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port7,           LM,            tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port8,           L1,            tmotorVex393HighSpeed_MC29, openLoop, encoderPort, I2C_2)
 #pragma config(Motor,  port9,           fb2,           tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port10,          MG,            tmotorVex393_HBridge, openLoop, reversed)
@@ -52,9 +52,9 @@ int NearOrFar=0;
 typedef struct
 {
 	int val;
+	int stack;
 }MOGO;
 MOGO mobi;
-#include "Tasks.c"
 //VVVVVVVVVVVVVVVVVVVVVV Voltage Check Class Structure VVVVVVVVVVVVVVVV
 typedef struct
 {
@@ -63,14 +63,16 @@ typedef struct
 TVoltage pr;
 TVoltage se;
 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+#include "Tasks.c"
 //392 ticks for IME high-speed
 #include "Functions.c"
 #include "FullAuto.c"
 #include "VexIncludes.c"
-void pre_auton()
-{		clearDebugStream();
+void pre_auton()//you can do it!!
+{		clearDebugStream();// i can see you
 	bStopTasksBetweenModes = true;
 	mobi.val=0;
+	mobi.stack=0;
 	stopTask(autonomous);
 	#include "PreAuto.c";
 }
@@ -81,9 +83,9 @@ task autonomous()
 pr.mult=PCheck(nImmediateBatteryLevel/1000.0);
 se.mult=SCheck(SensorValue[Pexpander]/280.0);
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//#include "MainAuto.c"
+#include "MainAuto.c"
 FullAuto();
-
+//PL(9);
 }
 task usercontrol()
 {stopTask(autonomous);

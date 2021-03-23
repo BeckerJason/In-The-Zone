@@ -141,9 +141,9 @@ while(1){
 	}
 
 	if (as==1)
-	{
-		S(); 				//Driver Stack auto
-		if(record==1){writeDebugStreamLine("S();");}
+	{mobi.stack=1;
+		startTask(S); 				//Driver Stack auto
+		if(record==1){writeDebugStreamLine("start taksS();");}
 		else{}
 	}
 	else if(as==2)
