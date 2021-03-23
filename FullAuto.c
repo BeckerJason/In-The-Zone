@@ -18,47 +18,55 @@ void FullAuto(){
 	SensorValue[enc]=0;
 	clearTimer(T3);//
 	C(2);
-//FB(10);
+FB(-30);
 //C(2);//CLOSE CLAW TO GRAB PRE-LOAD
 	wait1Msec(100);
-	L(250, 65,0);
+	//L(400, 65,0);
+liftCont(80);
+wait1Msec(1000);
+liftCont(20);
 	/////////////////////////////////////CM(0,127,1);
 	/////////////////////////////////////////CM(30,127,0);
 	//MOVE 12 INCHES TO POLL IN FORWARD DIRECTION AT 80 SPEED
-Mover(14, 0); //dist dir mg(1=y 0=n)
+Mover(10, 1); //dist dir mg(1=y 0=n)
 	//M(12,1,65);
-	liftCont(-50);
-	wait1Msec(500);
+//while(SensorValue[Rarm]>250)
+//{	liftCont(-20);}
+liftCont(0);
+wait1Msec(400);
 	C(3);
 	liftCont(65);
+	wait1Msec(250);
 	FB(70);	////4 bar stay up
-	wait1Msec(500);
 	liftCont(20);
+	wait1Msec(250);
+	liftCont(-20);
+	wait1Msec(250);
 	C(4);
-	FB(10);
+	FB(20);
 	//wait1Msec(500);
 	Mover(-6,0);
-
+	liftCont(0);
 	//TURN TO MOBILE GOAL
 	SensorValue[gyro]=0;
 	//Turning(AllianceColor*60);
-	T(AllianceColor*50,100,20);
+	T(AllianceColor*60,100,20);
 
 	writeDebugStreamLine("%f",SensorValue[gyro]);
 
-
-	motor[MG]=127;
-	wait1Msec(1000);
-	motor[MG]=50;
-	Mover(70,1);
+	wait1Msec(500);
+	mobi.val=2;//MG full speed
+	startTask(MGGM);
+	wait1Msec(750);
+	Mover(120,1);
 	//Move(100,70);
-
-	motor[MG]=-127;
+	mobi.val=-1;
+	startTask(MGGM);
 	wait1Msec(2500);
-
+	FB(30);	////4 bar stay up
 	//M(3,-1,127);	//Move robot back so it doesnt hit any cones
 
-	writeDebugStreamLine("%f",SensorValue[gyro]);
+	//writeDebugStreamLine("%f",SensorValue[gyro]);
 	//assuming robot is pointing towards the wall turn left parallel to pre-loads
 	//SensorValue[gyro]=0;
 	//const float gyroconst=(abs(SensorValue[gyro])-466.0)/10.0;
@@ -67,7 +75,7 @@ Mover(14, 0); //dist dir mg(1=y 0=n)
 	if (AllianceColor==1)
 	{po=60;}
 	else{po=-60;}
-	while(abs(SensorValue[in7])*0.973>520){
+	while(abs(SensorValue[in7])*0.94>520){
 		motor[LM] = -po*pr.mult;
 		motor[L1] = -po*pr.mult;
 		motor[RM] = po*pr.mult;
@@ -99,8 +107,6 @@ Mover(14, 0); //dist dir mg(1=y 0=n)
 	motor[L1] = 0;
 	motor[RM] = 0;
 	motor[R1] = 0;
-
-	motor[MG]=10;
 	//GET OUT OF BLUE TILE
 	//move back until blue tile
 
@@ -114,19 +120,19 @@ Mover(14, 0); //dist dir mg(1=y 0=n)
 	//	motor[R1] = -50;
 	//}
 
-	while(SensorValue[LineL]<1000||SensorValue[LineR]<1000){
-		if(SensorValue[LineL]<1000)
+	while(SensorValue[LineL]<2600||SensorValue[LineR]<2600){
+		if(SensorValue[LineL]<2600)
 		{
-			motor[LM] = -50;
-			motor[L1] = -50;}
-		else{	motor[LM] =60;
-			motor[L1] = 60;}
-		if(SensorValue[LineR]<1000)
+			motor[LM] = -40;
+			motor[L1] = -40;}
+		else{	motor[LM] =50;
+			motor[L1] = 650;}
+		if(SensorValue[LineR]<2600)
 		{
-			motor[RM] = -50;
-			motor[R1] = -50;}
-		else{	motor[RM] = 60;
-			motor[R1] = 60;}
+			motor[RM] = -40;
+			motor[R1] = -40;}
+		else{	motor[RM] = 50;
+			motor[R1] = 50;}
 		//	writeDebugStreamLine("L %d    R %d",SensorValue[LineL],SensorValue[LineR]);
 	}
 
@@ -152,7 +158,7 @@ Mover(14, 0); //dist dir mg(1=y 0=n)
 	motor[L1] = 60;
 	motor[RM] = 60;
 	motor[R1] = 60;
-	wait1Msec(500);
+	wait1Msec(750);
 
 	//IR2Sense();//Correct distance from preloads
 	M(3,-1,70);
@@ -169,7 +175,7 @@ Mover(14, 0); //dist dir mg(1=y 0=n)
 	if (NearOrFar==0)
 	{//Near zone code
 
-		PL(8);
+		PL(10);
 
 		SensorValue[gyro]=0;
 		T(AllianceColor*92,127,25);						//Changed from 92 to 100 during far zone programming
@@ -191,24 +197,33 @@ Mover(14, 0); //dist dir mg(1=y 0=n)
 		if (AllianceColor==1){
 			motor[RM] = 70*se.mult;		//Turn to face scoring zone
 			motor[R1] = 70*se.mult;
-			motor[LM] = 30*se.mult;
-			motor[L1] = 30*se.mult;}
+			motor[LM] = 20*se.mult;
+			motor[L1] = 20*se.mult;}
 		else{
-			motor[RM] = 30*se.mult;		//Turn to face scoring zone
-			motor[R1] = 30*se.mult;
+			motor[RM] = 20*se.mult;		//Turn to face scoring zone
+			motor[R1] = 20*se.mult;
 			motor[LM] = 70*se.mult;
 			motor[L1] = 70*se.mult;}
 
 		wait1Msec(1500);
-		motor[MG]=-127;
+		motor[roller]=127;
+		wait1Msec(300);
+		mobi.val=3;
+		startTask(MGGM);
 		////////////////SensorValue[claw]=0;//mobile goal out half way
 		motor[LM] = 0;
 		motor[L1] = 0;
 		motor[RM] = 0;
 		motor[R1] = 0;
+		wait1Msec(3000);
+		motor[LM] = -40;
+		motor[L1] = -40;
+		motor[RM] = -40;
+		motor[R1] = -40;
+		wait1Msec(400);
+		mobi.val=-1;
+		startTask(MGGM);
 		wait1Msec(2000);
-		motor[MG]=0;
-		wait1Msec(500);
 
 
 		M(7,-1, 127);
@@ -226,68 +241,129 @@ Mover(14, 0); //dist dir mg(1=y 0=n)
 	{	PL(7);
 
 		SensorValue[gyro]=0;
-		T(AllianceColor*105,127,55);						//Changed from 92 to 100 during far zone programming
+				T(AllianceColor*92,127,25);						//Changed from 92 to 100 during far zone programming
 
-		M(51,1, 127);
-		//Changed from 34 to 36during far zone programming
-		motor[LM] = -40;
-		motor[L1] = -40;
-		motor[RM] = -40;
-		motor[R1] = -40;
-		wait1Msec(150);
+		M(32,1, 127);								//Changed from 34 to 36during far zone programming
+		motor[LM] = -50;
+		motor[L1] = -50;
+		motor[RM] = -50;
+		motor[R1] = -50;
+		wait1Msec(50);
 		motor[LM] = 0;
 		motor[L1] = 0;
 		motor[RM] = 0;
 		motor[R1] = 0;
 
 		motor[fb1]=15;
-motor[fb2]=15;
+		motor[fb2]=15;
 
-		if(AllianceColor==1){
-			motor[RM] = 120*se.mult;		//Turn to face scoring zone
-			motor[R1] = 120*se.mult;
-			motor[LM] = -30*se.mult;
-			motor[L1] = -30*se.mult;}
-		else{motor[RM] = -30*se.mult;		//Turn to face scoring zone
-			motor[R1] = -30*se.mult;
-			motor[LM] = 120*se.mult;
-			motor[L1] = 120*se.mult;}
+		if (AllianceColor==1){
+			motor[RM] = 70*se.mult;		//Turn to face scoring zone
+			motor[R1] = 70*se.mult;
+			motor[LM] = 20*se.mult;
+			motor[L1] = 20*se.mult;}
+		else{
+			motor[RM] = 20*se.mult;		//Turn to face scoring zone
+			motor[R1] = 20*se.mult;
+			motor[LM] = 70*se.mult;
+			motor[L1] = 70*se.mult;}
 
+		wait1Msec(1500);
+		M(7,-1, 127);							//Back up to pole
 
-
-		wait1Msec(400);
-		motor[MG]=-127;								//mobile goal out half way
-		wait1Msec(400);
-
-		motor[RM] = 100;
-		motor[R1] = 100;
-
-
-
-		motor[MG]=5;
-		motor[LM] = 100*se.mult;		//Move to scoring zone
-		motor[L1] = 100*se.mult;
-		wait1Msec(1000);
-		C(0);								//Open claw to score
-		motor[MG]=-127;			//Mobile goal down all the way
-		wait1Msec(1000);
-
-
-		motor[LM] = 80;
-		motor[L1] = 80;
-		motor[RM] = 80;
-		motor[R1] = 80;
+			motor[RM] =127*se.mult;		//drive into mid scoring zone
+			motor[R1] = 127*se.mult;
+			motor[LM] = 127*se.mult;
+			motor[L1] = 127*se.mult;
+			wait1Msec(1500);
+			motor[RM] =50*se.mult;		//keep base forward
+			motor[R1] = 50*se.mult;
+			motor[LM] = 50*se.mult;
+			motor[L1] = 50*se.mult;
+		motor[roller]=127;				//spin cone out to release top of stack
 		wait1Msec(300);
+		mobi.val=3;
+		startTask(MGGM);					//Start moving mobile goal out
+		motor[LM] = 0;
+		motor[L1] = 0;
+		motor[RM] = 0;
+		motor[R1] = 0;
+		wait1Msec(3000);				//waiting for mobile goal task to be done
+		motor[LM] = -40;				//move away from stack
+		motor[L1] = -40;
+		motor[RM] = -40;
+		motor[R1] = -40;
+		wait1Msec(400);
+		mobi.val=-1;
+		startTask(MGGM);			//Move mobile goal back in
+		wait1Msec(500);
 
-		while (SensorValue[pot]>1850)//Lift mobile goal slightly to pull out
-		{motor[MG]=90;}
-		motor[MG]=10;
-		wait1Msec(500);
-		motor[LM] = -120;
-		motor[L1] = -120;
-		motor[RM] = -120;
-		motor[R1] = -120;
-		wait1Msec(500);
+		M(7,-1, 127);					//back out of mid zone
+
+
+//		//T(AllianceColor*105,127,55);						//Changed from 92 to 100 during far zone programming
+
+//		M(32,1, 127);
+//		//Changed from 34 to 36during far zone programming
+//		motor[LM] = -40;
+//		motor[L1] = -40;
+//		motor[RM] = -40;
+//		motor[R1] = -40;
+//		wait1Msec(150);
+//		motor[LM] = 0;
+//		motor[L1] = 0;
+//		motor[RM] = 0;
+//		motor[R1] = 0;
+
+//		motor[fb1]=15;
+//motor[fb2]=15;
+
+//		if(AllianceColor==1){
+//			motor[RM] = 120*se.mult;		//Turn to face scoring zone
+//			motor[R1] = 120*se.mult;
+//			motor[LM] = -30*se.mult;
+//			motor[L1] = -30*se.mult;}
+//		else{motor[RM] = -30*se.mult;		//Turn to face scoring zone
+//			motor[R1] = -30*se.mult;
+//			motor[LM] = 120*se.mult;
+//			motor[L1] = 120*se.mult;}
+
+
+
+
+//					wait1Msec(1500);
+//		motor[MG]=127;
+//		wait1Msec(300);
+//		mobi.val=3;
+//		startTask(MGGM);
+//		////////////////SensorValue[claw]=0;//mobile goal out half way
+//		motor[LM] = 0;
+//		motor[L1] = 0;
+//		motor[RM] = 0;
+//		motor[R1] = 0;
+//		wait1Msec(3000);
+//		motor[LM] = -40;
+//		motor[L1] = -40;
+//		motor[RM] = -40;
+//		motor[R1] = -40;
+//		wait1Msec(400);
+//		mobi.val=-1;
+//		startTask(MGGM);
+//		wait1Msec(2000);
+//		motor[LM] = -120;
+//		motor[L1] = -120;
+//		motor[RM] = -120;
+//		motor[R1] = -120;
+//		wait1Msec(500);
+
+
+
+
+
+
+
+
+
 		while(1)
 		{
 			motor[LM] = 0;
@@ -297,7 +373,7 @@ motor[fb2]=15;
 			motor[MG]=	0;
 		}
 	}
-	else if(NearOrFar==2)
+	else if(NearOrFar==2)///Code For grabbing second mobile goal
 	{
 		PL(4);
 

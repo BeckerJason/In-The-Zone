@@ -71,19 +71,25 @@ while(1){
 
 
 	//@@@@ MOBILE GOAL @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	if (vexRT[Btn8D]==1&&vexRT[Btn8R]==0)
+	if (vexRT[Btn8R]==1&&vexRT[Btn8D]==0&&vexRT[Btn8U]==0)
 	{
-		mg=-127*pr.mult; //Mobile Goal Up
+		mobi.val=2; //Mobile Goal Out Slow
+		startTask(MGGM);
 	}
-	else if (vexRT[Btn8R]==1&&vexRT[Btn8D]==0)
+		if (vexRT[Btn8R]==0&&vexRT[Btn8D]==0&&vexRT[Btn8U]==1)
 	{
-		mg=127*pr.mult; //Mobile Goal Down
+		mobi.val=1; //Mobile Goal Out Full speed
+		startTask(MGGM);
+	}
+	else if (vexRT[Btn8D]==1&&vexRT[Btn8R]==0&&vexRT[Btn8U]==0)
+	{
+		mobi.val=-1;//Mobile Goal In
+		startTask(MGGM);
 	}
 	else
 	{
-		mg=-5;		//Value To Keep Mobile Goal Back
 	}
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 
@@ -116,7 +122,7 @@ while(1){
 
 	if (SensorValue[Climit]==1)
 	{SensorValue[enc]=0;
-		writeDebugStreamLine("SensorValue[enc]=0;");
+		//writeDebugStreamLine("SensorValue[enc]=0;");
 	}
 	if (record==1)
 	{
