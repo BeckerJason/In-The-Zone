@@ -192,7 +192,8 @@ void DS()
 	{motor[ClawM]=-80*pr.mult;}
 }
 void M(int dist,int dir,int speed) //encoder count, direction , speed, primary voltage mult
-{	int fullRotation = (360); //12.56 inches in distance with 4 inch wheel
+{	clearTimer(T3);
+	int fullRotation = (360); //12.56 inches in distance with 4 inch wheel
 	float oneFoot = (.955*fullRotation); //oneFoot = 12 inches or 343.95
 	float oneInch= oneFoot/12;
 	float tile = 2 * oneFoot;
@@ -201,7 +202,7 @@ void M(int dist,int dir,int speed) //encoder count, direction , speed, primary v
 	SensorValue[Lenc]=0;
 	if (dir==1)
 	{
-		while (abs(SensorValue[Lenc])<count)
+		while (abs(SensorValue[Lenc])<count&time1(T3)<4000)
 		{
 			if(abs(SensorValue[Lenc])>abs(SensorValue[Renc])+2)
 			{
@@ -346,9 +347,9 @@ void PL(int cones)// Primary Voltage Mult, Secondary Voltage Mult
 		motor[ClawM]=15*pr.mult;
 		//while sonar sees cone {go up
 
-		while (SensorValue[enc]>-315&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
+		while (SensorValue[enc]<350&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
 		{
-			motor[ClawM]=-127*pr.mult;
+			motor[ClawM]=-127;
 		}
 		motor[ClawM]=15;
 		writeDebugStreamLine("1");
@@ -364,24 +365,25 @@ void PL(int cones)// Primary Voltage Mult, Secondary Voltage Mult
 		motor[rightArm] =127*pr.mult;}
 		*/
 		SensorValue[claw]=1;
-		wait1Msec(200);
+		//wait1Msec(200);
 		while(SensorValue[IR] ==0&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
 		{
-			motor[leftArm1] = 127*pr.mult;
-			motor[leftArm2] = 127*pr.mult;
-			motor[rightArm1] =127*pr.mult;
-			motor[rightArm2] =127*pr.mult;
+			motor[leftArm1] = 127;
+			motor[leftArm2] = 127;
+			motor[rightArm1] =127;
+			motor[rightArm2] =127;
 		}
+
 		writeDebugStreamLine("2");
 		//claw forward preset
 		//while (SensorValue[enc]>-460&&vexRT[Btn5D]==0)
 		//{motor[ClawM]=-127*pr.mult;}
-		while (SensorValue[enc]<-450&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
+		/*while (SensorValue[enc]<450&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
 		{
-			motor[ClawM]=127*pr.mult;
+			motor[ClawM]=127;
 		}
 		writeDebugStreamLine("3");
-		wait1Msec(75);
+		wait1Msec(75);*/
 		//while(SensorValue[sonar] <  13|| SensorValue[sonar] >50 &&vexRT[Btn6D]==0 )
 		//{motor[leftArm1] = 127*pr.mult;
 		//motor[leftArm2] = 127*pr.mult;
@@ -401,14 +403,15 @@ void PL(int cones)// Primary Voltage Mult, Secondary Voltage Mult
 		//then claw up
 		//	while (SensorValue[enc]<-30&&vexRT[Btn5D]==0)//~~~~~~~~~~~~Add Limit here instead of encoder
 		while (SensorValue (Climit)==0&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
-		{motor[ClawM]=127*pr.mult;}
+		{motor[ClawM]=127;}
 		motor[ClawM]=10*pr.mult;
+		SensorValue[Climit]=0;
 		//SensorValue[enc]=0;
 		//claw open
 		wait1Msec(100);
 		SensorValue[claw]=0;
 		//ClawStep=4;
-		wait1Msec(150);
+		wait1Msec(175);
 		/*	while(SensorValue[sonar] >1 && SensorValue[sonar] <7 &&vexRT[Btn5D]==0 ) 		//make the arm go up over the cones
 
 		{motor[leftArm1] = -127*pr.mult;
@@ -417,20 +420,33 @@ void PL(int cones)// Primary Voltage Mult, Secondary Voltage Mult
 		motor[rightArm2] =-127*pr.mult;}
 		*/
 		//claw forward
-		while (SensorValue[enc]>-300&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
-		{motor[ClawM]=-127*pr.mult;}
-		motor[ClawM]=10*pr.mult;
+		while (SensorValue[enc]<350&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0&&x<cones-1)
+		{motor[ClawM]=-127;}
+		motor[ClawM]=25*pr.mult;
 		wait1Msec(100);
 		//while limit isnt pressed {arm down}
 		clearTimer(T1);
-		if(SensorValue[limit] ==0)
+		if(SensorValue[limit] ==0&& x<cones-1)
 		{
 			while(SensorValue[limit] ==0&& time1(T1)<2000&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
-			{motor[leftArm1] =-50*pr.mult;
-				motor[leftArm2] = -50*pr.mult;
-				motor[rightArm1] =-50*pr.mult;
-				motor[rightArm2] =-50*pr.mult;}
+			{motor[leftArm1] =-100;
+				motor[leftArm2] = -100;
+				motor[rightArm1] =-100;
+				motor[rightArm2] =-100;}
 		}
+		else if(x==cones-1)
+			{
+				motor[leftArm1] =-100;		//This else  statement was added durng far zone programming
+				motor[leftArm2] = -100;
+				motor[rightArm1] =-100;
+				motor[rightArm2] =-100;
+				wait1Msec(300);
+				motor[leftArm1] =10;
+				motor[leftArm2] = 10;
+				motor[rightArm1] =10;
+				motor[rightArm2] =10;
+				SensorValue[claw]=1;
+				}
 		//claw down preset
 
 	}
@@ -562,10 +578,10 @@ void CM(int count, int speed, int lim)
 	{
 		if(SensorValue[enc]>count){
 			while (SensorValue[enc]>count)
-			{motor[ClawM]=-speed*pr.mult;}}
+			{motor[ClawM]=speed*pr.mult;}}
 		else if(SensorValue[enc]<count){
 			while (SensorValue[enc]<count)
-			{motor[ClawM]=speed*pr.mult;}}
+			{motor[ClawM]=-speed*pr.mult;}}
 	}
 	motor[ClawM]=10*pr.mult;
 }
@@ -575,31 +591,31 @@ void C(int val)
 	else{SensorValue[claw]=0;}
 }
 
-void IR2Sense()
-{
-	while (SensorValue[IR2]==1)		//if robot doesnt see wall move forward
-	{		motor[LM] = -50*se.mult;
-		motor[L1] =  -50*se.mult;
-		motor[RM] = -50*se.mult;
-		motor[R1] =  -50*se.mult;
-	}
-	wait1Msec(100);
-	while (SensorValue[IR2]==0)    //if robot sees wall back up
-	{		motor[LM] = 75*se.mult;
-		motor[L1] =  75*se.mult;
-		motor[RM] = 75*se.mult;
-		motor[R1] =  75*se.mult;
-	}
-	motor[LM] = -50*se.mult;
-	motor[L1] =  -50*se.mult;
-	motor[RM] = -50*se.mult;
-	motor[R1] =  -50*se.mult;
-	wait1Msec(50);
-	motor[LM] = 0*se.mult;
-	motor[L1] = 0*se.mult;
-	motor[RM] = 0*se.mult;
-	motor[R1] =  0*se.mult;
-}
+//void IR2Sense()
+//{
+//	while (SensorValue[IR2]==1)		//if robot doesnt see wall move forward
+//	{		motor[LM] = -50*se.mult;
+//		motor[L1] =  -50*se.mult;
+//		motor[RM] = -50*se.mult;
+//		motor[R1] =  -50*se.mult;
+//	}
+//	wait1Msec(100);
+//	while (SensorValue[IR2]==0)    //if robot sees wall back up
+//	{		motor[LM] = 75*se.mult;
+//		motor[L1] =  75*se.mult;
+//		motor[RM] = 75*se.mult;
+//		motor[R1] =  75*se.mult;
+//	}
+//	motor[LM] = -50*se.mult;
+//	motor[L1] =  -50*se.mult;
+//	motor[RM] = -50*se.mult;
+//	motor[R1] =  -50*se.mult;
+//	wait1Msec(50);
+//	motor[LM] = 0*se.mult;
+//	motor[L1] = 0*se.mult;
+//	motor[RM] = 0*se.mult;
+//	motor[R1] =  0*se.mult;
+//}
 
 void Turn(int adir, float Angle)
 {while ((SensorValue[gyro]/ 10)<Angle)

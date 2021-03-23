@@ -49,10 +49,10 @@ bool bStopTasksBetweenModes = true;
 static void displayStatusAndTime();
 
 task main()
-{
+{			//SensorValue[claw]=1;							//CODE ADDED TO KEEP ROBOT CLAW CLOSE
 	// Master CPU will not let competition start until powered on for at least 2-seconds
-	displayLCDCenteredString(0, "El Matador");
-	displayLCDCenteredString(1, "STARTING UP");
+	displayLCDCenteredString(0, "EL MATAMOSCAS");
+	displayLCDCenteredString(1, "Puesta en Marcha");
 	wait1Msec(2000);
 
 
@@ -122,7 +122,7 @@ task main()
 
 			// Waiting for autonomous phase to end
 			while (bIfiAutonomousMode && !bIfiRobotDisabled)
-			{
+			{		//	SensorValue[claw]=1;							//CODE ADDED TO KEEP ROBOT CLAW CLOSE
 				if (!bVEXNETActive)
 				{
 				  if (nVexRCReceiveState == vrNoXmiters) // the transmitters are powered off!!
