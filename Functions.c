@@ -1,12 +1,12 @@
-void ForwardToPole()
+void ForwardToPole(float speed)
 {	int EncoderValueL=0;
 	int EncoderValueR=0;
 	while ((abs(SensorValue[Lencoder])-EncoderValueL)>5)
 	{		if ((abs(SensorValue[Lencoder])-EncoderValueL)>5)
 		{
-			motor[leftDriveBack]=25;
-			motor[powerAB]=25;
-			motor[leftDriveFrontMID]=25;
+			motor[leftDriveBack]=speed;
+			motor[powerAB]=speed;
+			motor[leftDriveFrontMID]=speed;
 		}
 		else {
 			motor[leftDriveBack]=0;
@@ -15,9 +15,9 @@ void ForwardToPole()
 		}
 		if ((abs(SensorValue[Rencoder])-EncoderValueR)>5)
 		{
-			motor[rightDriveBack]=25;
-			motor[powerCD]=25;
-			motor[rightDriveFrontMID]=25;
+			motor[rightDriveBack]=speed;
+			motor[powerCD]=speed;
+			motor[rightDriveFrontMID]=speed;
 		}
 		else{motor[rightDriveBack]=0;
 			motor[powerCD]=0;
@@ -442,4 +442,22 @@ void RLineTrack(float vel)
 	motor[leftDriveBack]=0;
 	motor[powerAB]=0;
 	motor[leftDriveFrontMID]=0;
+}
+
+void TrackMG(int val)
+{	while (SensorValue[IR]==val)
+{
+	motor[rightDriveBack]=40;
+	motor[powerCD]=40;
+	motor[rightDriveFrontMID]=40;
+	motor[leftDriveBack]=-40;
+	motor[powerAB]=-40;
+	motor[leftDriveFrontMID]=-40;
+}
+	//	motor[rightDriveBack]=0;
+	//motor[powerCD]=0;
+	//motor[rightDriveFrontMID]=0;
+	//motor[leftDriveBack]=0;
+	//motor[powerAB]=0;
+	//motor[leftDriveFrontMID]=0;
 }

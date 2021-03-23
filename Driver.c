@@ -1,7 +1,7 @@
 //if (vexRT[Btn6U]==1){SensorValue[kicker]=1;}
 //else if(vexRT[Btn6D]==1){SensorValue[kicker]=0;}
-if(vexRT[Btn5U]==1){ddir=1; SensorValue[GLED]=1; SensorValue[RLED]=0;}
-else if (vexRT[Btn5D]==1){ddir=-1; SensorValue[GLED]=0; SensorValue[RLED]=1;}
+if(vexRT[Btn5U]==1){ddir=1; }
+else if (vexRT[Btn5D]==1){ddir=-1;}
 else{}
 if(abs(vexRT[Ch3])>10  || abs(vexRT[Ch4])>10)
 {

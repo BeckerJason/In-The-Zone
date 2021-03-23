@@ -11,9 +11,7 @@
 #pragma config(Sensor, dgtl4,  throwerIN,      sensorDigitalOut)
 #pragma config(Sensor, dgtl5,  MGlimitD,       sensorTouch)
 #pragma config(Sensor, dgtl6,  Claw,           sensorDigitalOut)
-#pragma config(Sensor, dgtl7,  Sonar,          sensorSONAR_cm)
-#pragma config(Sensor, dgtl11, RLED,           sensorDigitalOut)
-#pragma config(Sensor, dgtl12, GLED,           sensorDigitalOut)
+#pragma config(Sensor, dgtl10, IR,             sensorDigitalIn)
 #pragma config(Sensor, I2C_1,  Rencoder,       sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  Lencoder,       sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port2,           leftDriveFrontMID, tmotorVex393TurboSpeed_MC29, openLoop)
@@ -60,7 +58,7 @@ task VoltageCheck()
 		pr.mult=PCheck(nImmediateBatteryLevel/1000.0);
 		se.mult=SCheck(SensorValue[BackUpBattery]/280.0);
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		wait1Msec(5000);
+		wait1Msec(2000);
 	}
 }
 
@@ -133,11 +131,7 @@ task autonomous()
 
 
 task usercontrol()
-{
-	int mgPOS=0;
-	stopTask(autonomous);
-	//SensorValue[kicker]=0;
-	SensorValue[GLED]=1; SensorValue[RLED]=0;
+{	stopTask(autonomous);
 	float Loffset, Roffset, speed,dir;
 	int ddir=1;
 	startTask(POTTop);
