@@ -1,3 +1,78 @@
+void ForwardToPole()
+{	int EncoderValueL=0;
+	int EncoderValueR=0;
+	while ((abs(SensorValue[Lencoder])-EncoderValueL)>5)
+	{		if ((abs(SensorValue[Lencoder])-EncoderValueL)>5)
+		{
+			motor[leftDriveBack]=25;
+			motor[powerAB]=25;
+			motor[leftDriveFrontMID]=25;
+		}
+		else {
+			motor[leftDriveBack]=0;
+			motor[powerAB]=0;
+			motor[leftDriveFrontMID]=0;
+		}
+		if ((abs(SensorValue[Rencoder])-EncoderValueR)>5)
+		{
+			motor[rightDriveBack]=25;
+			motor[powerCD]=25;
+			motor[rightDriveFrontMID]=25;
+		}
+		else{motor[rightDriveBack]=0;
+			motor[powerCD]=0;
+			motor[rightDriveFrontMID]=0;}
+
+			EncoderValueL=abs(SensorValue[Lencoder]);
+			EncoderValueR=abs(SensorValue[Rencoder]);
+			wait1Msec(350);
+	}
+	motor[rightDriveBack]=0;
+	motor[powerCD]=0;
+	motor[rightDriveFrontMID]=0;
+	motor[leftDriveBack]=0;
+	motor[powerAB]=0;
+	motor[leftDriveFrontMID]=0;
+}
+void BackUpWall()
+{	int EncoderValueL=0;
+	int EncoderValueR=0;
+	while ((abs(SensorValue[Lencoder])-EncoderValueL)>5)
+	{		if ((abs(SensorValue[Lencoder])-EncoderValueL)>5)
+		{
+			motor[leftDriveBack]=-50;
+			motor[powerAB]=-50;
+			motor[leftDriveFrontMID]=-50;
+		}
+		else {
+			motor[leftDriveBack]=0;
+			motor[powerAB]=0;
+			motor[leftDriveFrontMID]=0;
+		}
+		if ((abs(SensorValue[Rencoder])-EncoderValueR)>5)
+		{
+			motor[rightDriveBack]=-50;
+			motor[powerCD]=-50;
+			motor[rightDriveFrontMID]=-50;
+		}
+		else{motor[rightDriveBack]=0;
+			motor[powerCD]=0;
+			motor[rightDriveFrontMID]=0;}
+
+			EncoderValueL=abs(SensorValue[Lencoder]);
+			EncoderValueR=abs(SensorValue[Rencoder]);
+			wait1Msec(350);
+	}
+	motor[rightDriveBack]=0;
+	motor[powerCD]=0;
+	motor[rightDriveFrontMID]=0;
+	motor[leftDriveBack]=0;
+	motor[powerAB]=0;
+	motor[leftDriveFrontMID]=0;
+}
+
+
+
 void BackUpPole()
 {
 	while(SensorValue[BLine]>1200)
@@ -119,31 +194,32 @@ void M(float dist, int vel, int MobileGoal)
 	motor[leftDriveFrontMID]=0;
 }
 
-void T(float degree, int vel)
+void T(float degree, float vel)
 {clearTimer(T1);
 	SensorValue[Rencoder]=0;
 	SensorValue[Lencoder]=0;
-	SensorValue[gyro]=0;
+	SensorValue[in1]=0;
 	//90 degrees
 
-	int x;
-	int dir,Loffset, Roffset,speed;
+	float x;
+	float dir,Loffset, Roffset,speed;
 
 	if (degree<0){dir=-1;}
 	else{dir=1;}//
 	degree=degree*9.2;//Correction factor for this specific gyro
 
-	while(abs(SensorValue[gyro])>(abs(degree)+10)||abs(SensorValue[gyro])<(abs(degree)-10) && time1[T1]<2500)
+	while(abs(SensorValue[in1])>(abs(degree)+10)||abs(SensorValue[in1])<(abs(degree)-10) && time1[T1]<2500)
 	{
+		writeDebugStreamLine("%f",SensorValue(in1));
 		if (abs(SensorValue[Rencoder])<abs(SensorValue[Lencoder])){Loffset=dir*10; Roffset=0;}
 		else if (abs(SensorValue[Lencoder])<abs(SensorValue[Rencoder])){Loffset=0; Roffset=-dir*10;}
 		else{Loffset=0; Roffset=0;}
 
-		x=(degree-SensorValue[gyro])/10;
+		x=(degree-SensorValue[in1])/10;
 		/*if ((pow(x,2)+20)%127>0){speed=dir*127;}
 		else{speed=dir*pow(x,2)+20;}
 		*/
-	 speed=vel;//abs(100*x/(degree*1.25))+20;/*pow((x/16),2);*//*100*cos(x/2)/2+(100/2);*/
+		speed=vel;//abs(100*x/(degree*1.25))+20;/*pow((x/16),2);*//*100*cos(x/2)/2+(100/2);*/
 		speed=dir*speed*se.mult;
 
 		//writeDebugStreamLine("%d, %d", x, speed);
@@ -264,7 +340,7 @@ void Test(float dist, int MobileGoal)
 	clearTimer(T1);
 	while( time1[T1]<3500 && (abs(SensorValue[Lencoder])<(abs(dist))   )/*&&abs(SensorValue[gyro])!=(abs(dist)-50)*/)
 	{
-		x=(abs(dist)-abs(SensorValue[Lencoder]);
+		x=abs(dist)-abs(SensorValue[Lencoder]);
 		//if (x<0){dir=-1; x=-x;}
 		//else{dir=1;}
 		//
@@ -310,16 +386,16 @@ void Test(float dist, int MobileGoal)
 
 void Motors(float speed, int time)
 {
-		float Loffset=0; float Roffset=0;
+	float Loffset=0; float Roffset=0;
 
-		writeDebugStreamLine("%d, %d", Loffset, Roffset);
-		motor[rightDriveBack]=speed+Roffset;
-		motor[powerCD]=speed+Roffset;
-		motor[rightDriveFrontMID]=speed+Roffset;
-		motor[leftDriveBack]=speed+Loffset;
-		motor[powerAB]=speed+Loffset;
-		motor[leftDriveFrontMID]=speed+Loffset;
-		wait1Msec(time);
+	writeDebugStreamLine("%d, %d", Loffset, Roffset);
+	motor[rightDriveBack]=speed+Roffset;
+	motor[powerCD]=speed+Roffset;
+	motor[rightDriveFrontMID]=speed+Roffset;
+	motor[leftDriveBack]=speed+Loffset;
+	motor[powerAB]=speed+Loffset;
+	motor[leftDriveFrontMID]=speed+Loffset;
+	wait1Msec(time);
 }
 
 void LineTrack(int speed, int track )
@@ -334,9 +410,9 @@ void LineTrack(int speed, int track )
 			}
 			else
 			{
-				motor[leftDriveBack]=-speed/2;
-				motor[powerAB]=-speed/2;
-				motor[leftDriveFrontMID]=-speed/2;
+				motor[leftDriveBack]=-speed/3;
+				motor[powerAB]=-speed/3;
+				motor[leftDriveFrontMID]=-speed/3;
 			}
 			if (SensorValue[RLine]>1000)
 			{
@@ -346,9 +422,9 @@ void LineTrack(int speed, int track )
 			}
 			else
 			{
-				motor[rightDriveBack]=-speed/2;
-				motor[powerCD]=-speed/2;
-				motor[rightDriveFrontMID]=-speed/2;
+				motor[rightDriveBack]=-speed/3;
+				motor[powerCD]=-speed/3;
+				motor[rightDriveFrontMID]=-speed/3;
 			}
 		}
 	}
@@ -418,15 +494,16 @@ task MGUpAuto()
 }
 
 task MGDown()
-{
+{	stopTask(MGUp);
+	stopTask(MGUpAuto);
 	SensorValue[piston]=0;
 	while(SensorValue[MGlimitD]==0||SensorValue[MGlimit]==1)
 	{
 		motor[rightMG]=127;
 		motor[leftMG]=127;
 	}
-	motor[rightMG]=10;
-	motor[leftMG]=10;
+	motor[rightMG]=0;
+	motor[leftMG]=0;
 	stopTask(MGDown);
 }
 task throw()

@@ -1,5 +1,5 @@
-if (vexRT[Btn6U]==1){SensorValue[kicker]=1;}
-else if(vexRT[Btn6D]==1){SensorValue[kicker]=0;}
+//if (vexRT[Btn6U]==1){SensorValue[kicker]=1;}
+//else if(vexRT[Btn6D]==1){SensorValue[kicker]=0;}
 if(vexRT[Btn5U]==1){ddir=1; SensorValue[GLED]=1; SensorValue[RLED]=0;}
 else if (vexRT[Btn5D]==1){ddir=-1; SensorValue[GLED]=0; SensorValue[RLED]=1;}
 else{}
@@ -56,21 +56,23 @@ else
 
 
 
-if(vexRT[Btn8R]==0&&vexRT[Btn8D]==1)
+if(vexRT[Btn8U]==0&&vexRT[Btn8L]==1)
 {
-	if(SensorValue[MGlimitD]==0&&SensorValue[MGlimit]==1)
+	if(SensorValue[MGlimitD]==0)
 	{
 		stopTask(MGUp);
 		startTask(MGDown);
 	}
-	else if(SensorValue[MGlimitD]==1&&SensorValue[MGlimit]==0)
-	{
-		motor[rightMG]=62;
-		motor[leftMG]=62;
-	}
-	else
-{
-	}
+	//else if(SensorValue[MGlimitD]==1&&SensorValue[MGlimit]==0)
+	//{
+	//	motor[rightMG]=62;
+	//	motor[leftMG]=62;
+	//}
+	//else
+	//{
+	//	motor[rightMG]=0;
+	//	motor[leftMG]=0;
+	//}
 	//SensorValue[piston]=0;
 	//wait10Msec(4);
 	//motor[rightMG]=127;
@@ -78,7 +80,7 @@ if(vexRT[Btn8R]==0&&vexRT[Btn8D]==1)
 	//	mgPOS=0;
 
 }
-else if(vexRT[Btn8R]==1&&vexRT[Btn8D]==0&&SensorValue[MGlimit]==0)
+else if(vexRT[Btn8U]==1&&vexRT[Btn8L]==0)
 {
 
 	stopTask(MGDown);
@@ -89,24 +91,26 @@ else if(vexRT[Btn8R]==1&&vexRT[Btn8D]==0&&SensorValue[MGlimit]==0)
 	//SensorValue[piston]=1;
 	//mgPOS=1;
 }
-else if(vexRT[Btn8R]==1&&vexRT[Btn8D]==0&&SensorValue[MGlimit]==1)
-{
-	motor[rightMG]=-15;
-	motor[leftMG]=-15;
-}
-//else if(mgPOS==1)
+//else if(vexRT[Btn8U]==1&&vexRT[Btn8L]==0&&SensorValue[MGlimit]==1)
 //{
 //	motor[rightMG]=-15;
 //	motor[leftMG]=-15;
 //}
-else
-{
-}
+////else if(mgPOS==1)
+////{
+////	motor[rightMG]=-15;
+////	motor[leftMG]=-15;
+////}
+//else
+//{
+//	motor[rightMG]=0;
+//	motor[leftMG]=0;
+//}
 
-if(vexRT[Btn8L]==1)
+if(vexRT[Btn8D]==1)
 {SensorValue[piston]=0;}
 
-if(vexRT[Btn8U]==1)
+if(vexRT[Btn8R]==1)
 {
 	if(SensorValue[MGlimitD]==1)
 		startTask(PistonUp);
@@ -114,9 +118,11 @@ if(vexRT[Btn8U]==1)
 		SensorValue[piston]=1;
 }
 
-if(vexRT[Btn7D]==1)
-{motor[ConeGrab]=90;}
+if(vexRT[Btn6U]==1)
+	startTask(throw);
+//if(vexRT[Btn7D]==1)
+//{motor[ConeGrab]=90;}
 
-else if(vexRT[Btn7U]==1)
-{motor[ConeGrab]=-90;}
-else{motor[ConeGrab]=0;}
+//else if(vexRT[Btn7U]==1)
+//{motor[ConeGrab]=-90;}
+//else{motor[ConeGrab]=0;}
