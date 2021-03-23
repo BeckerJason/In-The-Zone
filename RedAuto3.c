@@ -34,7 +34,7 @@ void RedAuto3(void)
 	//ALIGN WITH MID CONES
 	//NO MOBILE GOAL ON
 	//REVERSED
-	pidTurn(-45, 0.35, 0.08, 1.4, 3500);
+	pidTurn(-44, 0.35, 0.08, 1.4, 3500);
 	//pidTurn(45, 0.4, 0.1, 1.0, 3500);
 
 	while(MoveDist(110,100, 5000, 1));

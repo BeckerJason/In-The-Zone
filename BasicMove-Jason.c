@@ -82,7 +82,7 @@ int FBControl (int ud)
 	//Down//
 	else
 	{
-		if(SensorValue[FBEnc] < 180 && time1[T2] < 1500)
+		if(SensorValue[FBEnc] < 190 && time1[T2] < 1500)
 		{
 			motor[fb1]=127;
 			motor[fb2]=127;
@@ -94,8 +94,8 @@ int FBControl (int ud)
 			motor[fb1]=0;
 			motor[fb2]=0;
 			wait1Msec(150);
-			motor[fb1]=15;
-			motor[fb2]=15;
+			motor[fb1]=20;
+			motor[fb2]=20;
 			fbStatus = -1;
 			return 0;
 		}

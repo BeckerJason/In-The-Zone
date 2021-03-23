@@ -11,10 +11,10 @@ void RedAuto1(void)
 	/**/
 	//**************PART 1; GO FOR MG AND PRE-LOADS***********************************************************************
 
-	while(MoveDist(69, 65, 5000, 1))
+	while(MoveDist(69, 60, 5000, 1))
 	{
 		if(MGControl(1))
-		else	motor[MG] = -90;
+		else	motor[MG] = -100;
 	}
 	motor[MG] = 0;
 
@@ -35,7 +35,7 @@ void RedAuto1(void)
 	//FLIP
 	pidTurn(20, 0.4, 0.1, 1.0, 3500);
 
-	while(MoveDist(-18, 100, 5000, 1));
+	while(MoveDist(-16, 100, 5000, 1));
 	//FLIPPED
 	pidTurn(70, 0.35, 0.05, 1.4, 3500);
 
@@ -56,7 +56,7 @@ void RedAuto1(void)
 	while(FBControl(0));
 
 
-	for(int i = 0; i<5;i++)
+	for(int i = 0; i<8;i++)
 	{
 		motor[roller] = 127;
 		if(i == 0)
@@ -104,7 +104,7 @@ void RedAuto1(void)
 		wait1Msec(250);
 		LiftPow(0);
 
-		if(i < 4)
+		if(i < 7)
 		{
 			LiftPow(127);
 			intake(0);
@@ -120,9 +120,10 @@ void RedAuto1(void)
 	//TURN TO GO TO ZONE
 	//TURN LESS THAN BEFORE (-105)
 	//FLIPPED
-	pidTurn(95, 0.35, 0.05, 1.4, 3500);
-	//GO FORWARDS MORE THAN BEFORE (45.5) (58)
-	while(MoveDist(60, 100, 5000, 1));
+	//TURN MORE TO CENTER (95)
+	pidTurn(98, 0.35, 0.05, 1.4, 3500);
+	//GO FORWARDS MORE THAN BEFORE (45.5) (58) (60)
+	while(MoveDist(61.5, 100, 5000, 1));
 	wait1Msec(250);
 	//BREAK/////
 	//rightDrive(-5);
@@ -135,12 +136,13 @@ void RedAuto1(void)
 	//align TO ZONE
 	//turn less than before (60)
 	//FLIP
-	pidTurn(-55, 0.37, 0.05, 1.2, 3500);
+	pidTurn(-50, 0.37, 0.05, 1.2, 3500);
 
 	while(MoveDist(24, 100, 5000, 0));
 	//KILL LIFT BEFORE DEPLOING MG
 	LiftPow(0);
-	while(MGControl(1))
+	clearTimer(T3);
+	while(MGControl(1) && time1[T3] < 5000)
 	{
 		//motor[roller] = -127;
 		if(SensorValue[MPot] > 500)
@@ -152,6 +154,7 @@ void RedAuto1(void)
 		rightDrive(50);
 		leftDrive(50);
 	}
+	motor[MG] = 0;
 	StopDrive();
 
 	LiftPow(30);
@@ -198,12 +201,14 @@ void RedAuto1(void)
 	//ALIGN PARALLEL TO 2ND MG
 	LiftPow(0);
 	motor[MG] = -127;
-	//FLIPPED
-	pidTurn(45, 0.35, 0.05, 1.4, 3500);
+	//FLIPPED (50)
+	pidTurn(52, 0.35, 0.05, 1.4, 3500);
 	// GO FOR MG
 	while(MoveDist(60, 70, 5000, 1))
 	{
 		MGControl(1);
+		if(MGControl(1))
+		else	motor[MG] = -90;
 		LiftPow(30);
 	}
 	//BRING MOBILE GOAL IN
@@ -268,7 +273,7 @@ void RedAuto1(void)
 	while(MoveDist(-58, 100, 5000, 1);
 	//FLIPPED
 	//-135 CHANGED TO 145
-	pidTurn(-145, 0.35, 0.05, 1.4, 3500);
+	pidTurn(-155, 0.35, 0.05, 1.4, 3500);
 	//while(MoveDist(-10, 100, 5000, 1);
 	//pidTurn(90, 0.35, 0.05, 1.4, 3500);
 

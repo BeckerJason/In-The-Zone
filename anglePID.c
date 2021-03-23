@@ -4,8 +4,8 @@
 //#define PID_MOTOR_MAX       127
 //#define PID_MOTOR_MIN     (-127)
 //#define PID_INTEGRAL_LIMIT  50
-float  pid_Kp = 0.5;
-float  pid_Ki = 0.05;//0.05;
+float  pid_Kp = 0.59;
+float  pid_Ki = 0.09;//0.05;
 float  pid_Kd = 0;//.05;
 int   pidRunning = 0; //TURN ON OR OFF PID
 float  RequestedAngle = 0, pidDriveR;

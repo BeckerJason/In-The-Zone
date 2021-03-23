@@ -1,5 +1,5 @@
 //#include "BlueAuto1Failsafe.c"
-void BlueAuto1(void)
+void RedAuto1(void)
 {
 	//RESET////////////////
 	motor[roller] = 60;
@@ -11,10 +11,15 @@ void BlueAuto1(void)
 	/**/
 	//**************PART 1; GO FOR MG AND PRE-LOADS***********************************************************************
 
-	while(MoveDist(69, 65, 5000, 1))
+	while(MoveDist(54, 60, 5000, 1))
 	{
 		if(MGControl(1))
-		else	motor[MG] = -100;
+		else	motor[MG] =-90;
+	}
+		while(MoveDist(15, 40, 3000, 1))
+	{
+		if(MGControl(1))
+		else	motor[MG] =-90;
 	}
 	motor[MG] = 0;
 
@@ -32,11 +37,11 @@ void BlueAuto1(void)
 	intake(0);
 
 	//ALIGN WITH PRE-LOAD STATION
-	pidTurn(-20, 0.4, 0.1, 1.0, 3500);
+	pidTurn(20, 0.4, 0.1, 1.0, 3500);
 
-	while(MoveDist(-16, 100, 5000, 1));
+	while(MoveDist(-18, 100, 5000, 1));
 
-	pidTurn(-70, 0.35, 0.05, 1.4, 3500);
+	pidTurn(70, 0.35, 0.05, 1.4, 3500);
 
 	while(MoveDist(3, 80, 2000, 1));
 
@@ -77,8 +82,8 @@ void BlueAuto1(void)
 		motor[fb2] = 20;
 		//while(intake(1));
 		motor[roller] = 127;
-		wait1Msec(150);
-		motor[roller] = 30;
+		wait1Msec(100);
+		motor[roller] = 60;
 		motor[fb1] = 0;
 		motor[fb2] = 0;
 
@@ -116,10 +121,10 @@ void BlueAuto1(void)
 	while(MoveDist(-5, 100, 2000, 1));
 	//TURN TO GO TO ZONE
 	//TURN LESS THAN BEFORE (-105)(-95)
-	pidTurn(-98, 0.35, 0.05, 1.4, 3500);
+	pidTurn(95, 0.35, 0.05, 1.4, 3500);
 	//GO FORWARDS MORE THAN BEFORE (45.5)
-	while(MoveDist(61.5, 100, 5000, 1));
-	wait1Msec(250);
+	while(MoveDist(58, 100, 5000, 1));
+	wait1Msec(150);
 	//BREAK/////
 	//rightDrive(-5);
 	//leftDrive(-5);
@@ -130,13 +135,13 @@ void BlueAuto1(void)
 
 	//align TO ZONE
 	//turn less than before (60)
-	pidTurn(50, 0.37, 0.05, 1.2, 3500);
+	pidTurn(-55, 0.37, 0.05, 1.2, 3500);
 
 	while(MoveDist(24, 100, 5000, 0));
 	//KILL LIFT BEFORE DEPLOING MG
 	LiftPow(0);
-	clearTimer(T3);
-	while(MGControl(1)&& time1[T3] < 5000)
+	clearTimer(T3)
+	while(MGControl(1)&& time1[T3]<5000)
 	{
 		//motor[roller] = -127;
 		if(SensorValue[MPot] > 500)
@@ -184,18 +189,25 @@ void BlueAuto1(void)
 	///*************2nd PART GO FOR SECOND MG AND 3 CONES*********************************************
 
 	//ALIGN PARALLEL TO LINE
-	pidTurn(-90, 0.35, 0.05, 1.4, 3500);
+	pidTurn(90, 0.35, 0.05, 1.4, 3500);
 
 	//GO TO TURN TOWARDS 2ND MG
 	while(MoveDist(22, 100, 5000, 1));
 	//ALIGN PARALLEL TO 2ND MG
 	LiftPow(0);
 	motor[MG] = -127;
-	pidTurn(-45, 0.35, 0.05, 1.4, 3500);
+	pidTurn(45, 0.35, 0.05, 1.4, 3500);
 	// GO FOR MG
-	while(MoveDist(60, 70, 5000, 1))
+	while(MoveDist(45, 60, 5000, 1))
 	{
-		MGControl(1);
+				if(MGControl(1))
+		else	motor[MG] = -60;
+		LiftPow(30);
+	}
+		while(MoveDist(15, 50, 3000, 1))
+	{
+				if(MGControl(1))
+		else	motor[MG] = -60;
 		LiftPow(30);
 	}
 	//BRING MOBILE GOAL IN
@@ -257,7 +269,7 @@ void BlueAuto1(void)
 	//GO TO DEPLOY 2ND MG//////////////////
 	//SINGLE TURN
 	while(MoveDist(-58, 100, 5000, 1);
-	pidTurn(155, 0.35, 0.05, 1.4, 3500);
+	pidTurn(-155, 0.35, 0.05, 1.4, 3500);
 	//while(MoveDist(-10, 100, 5000, 1);
 	//pidTurn(90, 0.35, 0.05, 1.4, 3500);
 

@@ -12,13 +12,12 @@ void BlueAuto3(void)
 	/**/
 	//**************PART 1; GO FOR MG AND PRE-LOADS***********************************************************************
 
-	while(MoveDist(10.5, 65, 5000, 1))///was 10.5
+	while(MoveDist(10.5, 65, 5000, 1))
 	{
 		//if(MGControl(1))
 		//else	motor[MG] = -90;
 	}
 	motor[MG] = 0;
-	StopDrive();
 
 	while(MgControl(0))
 	{
@@ -35,7 +34,8 @@ void BlueAuto3(void)
 	//ALIGN WITH MID CONES
 	//NO MOBILE GOAL ON
 	//REVERSED
-	pidTurn(47, 0.35, 0.08, 1.4, 3500);
+	//(44 to 46 to actually hit the cones)
+	pidTurn(46, 0.35, 0.08, 1.4, 3500);
 	//pidTurn(45, 0.4, 0.1, 1.0, 3500);
 
 	while(MoveDist(110,100, 5000, 1));
@@ -70,7 +70,7 @@ void BlueAuto3(void)
 	while(MoveDist(-25,100, 5000, 1)){}
 	wait1Msec(250);
 	//REVERSED
-	pidTurn(110, 0.35, 0.05, 1.4, 2000);
+	pidTurn(115, 0.35, 0.05, 1.4, 2000);
 		while(MoveDist(38,100, 5000, 1)){}
 		//REVERSED
 				pidTurn(40, 0.4, 0.1, 1.0, 1000);
@@ -86,7 +86,7 @@ while(	MGControl(0)){}
 	pidTurn(-90, 0.35, 0.05, 1.4, 3500);
 
 	//GO TO TURN TOWARDS 2ND MG
-	while(MoveDist(44, 100, 5000, 1));
+	while(MoveDist(42, 100, 5000, 1));
 	//ALIGN PARALLEL TO 2ND MG
 	//REVERSED
 	pidTurn(-45, 0.35, 0.08, 1.4, 3500);

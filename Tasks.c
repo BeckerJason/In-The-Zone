@@ -6,6 +6,9 @@ task FourBar()
 		if(fbStatus==1)
 		{
 			while(FBControl(1));
+			//{
+				//if(vexRT[
+			//}
 		}
 
 		//Bring Roller Down//
