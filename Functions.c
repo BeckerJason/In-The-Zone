@@ -60,28 +60,36 @@ void M(float dist, int vel, int MobileGoal)
 	SensorValue[I2C_2]=0;
 	dist= (dist*261.33)/(4*3.1415);///Change 261 (IME Turbo) for 360 for external Motor controllers
 
-	int x;
-	int q=0;
-	int dir,Loffset, Roffset,speed;
+	//int x;
+	float dir,Loffset, Roffset,speed;
 
-	if (dist<0){dir=1;}
-	else{dir=-1;}//
+	if (dist<0){dir=-1;}
+	else{dir=1;}//
 
 	//while(q<2)
 	//{
 	//wait1Msec(100);
 	clearTimer(T3);
-	while((abs(SensorValue[Lencoder])<(abs(dist))&&time1[T3]<3000)/*&&abs(SensorValue[gyro])!=(abs(dist)-50)*/)
+	while(((abs(SensorValue[Lencoder])<(abs(dist))&&time1[T3]<3000))/*&&abs(SensorValue[gyro])!=(abs(dist)-50)*/)
 	{
-		if (abs(SensorValue[Rencoder])<(abs(SensorValue[Lencoder]))){Loffset=-dir*5; Roffset=0;}
-		else if (abs(SensorValue[Lencoder])<(abs(SensorValue[Rencoder]))){Loffset=0; Roffset=-dir*5;}
-		else{Loffset=0; Roffset=0;}
 
-		x=(dist-SensorValue[Lencoder])/*/18*/;
+
+		//x=(dist-SensorValue[Lencoder])/*/18*/;
 		//if ((pow(x,2))%127>0){speed=-dir*127;}//-127cos(pow((x/57),2)+(127/2)
 		//	else{speed=-dir*pow(x,2);}
-		speed=vel*se.mult;/*-100*cos(x/(dist/5))/2+100/2;*/  //abs((80*x)/50);//pow(x/18),2);//127*cos(x/57)/2+(127/2);
-		speed=-dir*speed;
+		speed=dir*vel*se.mult;/*-100*cos(x/(dist/5))/2+100/2;*/  //abs((80*x)/50);//pow(x/18),2);//127*cos(x/57)/2+(127/2);
+		//speed=-dir*speed;
+
+		if ((abs(SensorValue[Rencoder])<abs(SensorValue[Lencoder]))/*&&time1[T3]>250*/){Loffset=-dir*5; Roffset=0;}
+		else if ((abs(SensorValue[Lencoder])<abs(SensorValue[Rencoder]))/*&&time1[T3]>250*/){Loffset=0; Roffset=-dir*5;}
+		//else if(time1[T3]>250)
+		//{
+		//	Loffset=0;
+		//	Roffset=0;
+		//	SensorValue[I2C_1]=0;
+		//	SensorValue[I2C_2]=0;
+		//}
+		else{Loffset=0; Roffset=0;}
 
 		writeDebugStreamLine("%d, %d", Loffset, Roffset);
 		motor[rightDriveBack]=speed+Roffset;
@@ -93,12 +101,12 @@ void M(float dist, int vel, int MobileGoal)
 
 	}
 	if (MobileGoal==0)
-	{motor[rightDriveBack]=dir*50/2;
-		motor[powerCD]=dir*50/2;
-		motor[rightDriveFrontMID]=dir*50/2;
-		motor[leftDriveBack]=dir*50/2;
-		motor[powerAB]=dir*50/2;
-		motor[leftDriveFrontMID]=dir*50/2;
+	{motor[rightDriveBack]=-dir*50/2;
+		motor[powerCD]=-dir*50/2;
+		motor[rightDriveFrontMID]=-dir*50/2;
+		motor[leftDriveBack]=-dir*50/2;
+		motor[powerAB]=-dir*50/2;
+		motor[leftDriveFrontMID]=-dir*50/2;
 		//q++;
 		wait1Msec(100);
 	}
@@ -111,7 +119,7 @@ void M(float dist, int vel, int MobileGoal)
 	motor[leftDriveFrontMID]=0;
 }
 
-void T(float degree)
+void T(float degree, int vel)
 {clearTimer(T1);
 	SensorValue[Rencoder]=0;
 	SensorValue[Lencoder]=0;
@@ -135,7 +143,7 @@ void T(float degree)
 		/*if ((pow(x,2)+20)%127>0){speed=dir*127;}
 		else{speed=dir*pow(x,2)+20;}
 		*/
-		speed=60;//abs(100*x/(degree*1.25))+20;/*pow((x/16),2);*//*100*cos(x/2)/2+(100/2);*/
+	 speed=vel;//abs(100*x/(degree*1.25))+20;/*pow((x/16),2);*//*100*cos(x/2)/2+(100/2);*/
 		speed=dir*speed*se.mult;
 
 		//writeDebugStreamLine("%d, %d", x, speed);
@@ -300,6 +308,19 @@ void Test(float dist, int MobileGoal)
 	motor[leftDriveFrontMID]=0;
 }
 
+void Motors(float speed, int time)
+{
+		float Loffset=0; float Roffset=0;
+
+		writeDebugStreamLine("%d, %d", Loffset, Roffset);
+		motor[rightDriveBack]=speed+Roffset;
+		motor[powerCD]=speed+Roffset;
+		motor[rightDriveFrontMID]=speed+Roffset;
+		motor[leftDriveBack]=speed+Loffset;
+		motor[powerAB]=speed+Loffset;
+		motor[leftDriveFrontMID]=speed+Loffset;
+		wait1Msec(time);
+}
 
 void LineTrack(int speed, int track )
 {if (track==0)
@@ -365,4 +386,71 @@ void LineTrack(int speed, int track )
 	motor[leftDriveBack]=0;
 	motor[powerAB]=0;
 	motor[leftDriveFrontMID]=0;
+}
+
+task MGUp()
+{
+	SensorValue[piston]=0;
+	while(SensorValue[MGlimit]==0)
+	{
+		motor[rightMG]=-127;
+		motor[leftMG]=-127;
+	}
+	motor[rightMG]=0;
+	motor[leftMG]=0;
+	stopTask(MGUp);
+}
+
+task MGUpAuto()
+{
+	SensorValue[piston]=0;
+	motor[rightMG]=65;
+	motor[leftMG]=65;
+	wait10Msec(25);
+	while(SensorValue[MGlimit]==0)
+	{
+		motor[rightMG]=-127;
+		motor[leftMG]=-127;
+	}
+	motor[rightMG]=0;
+	motor[leftMG]=0;
+	stopTask(MGUpAuto);
+}
+
+task MGDown()
+{
+	SensorValue[piston]=0;
+	while(SensorValue[MGlimitD]==0||SensorValue[MGlimit]==1)
+	{
+		motor[rightMG]=127;
+		motor[leftMG]=127;
+	}
+	motor[rightMG]=10;
+	motor[leftMG]=10;
+	stopTask(MGDown);
+}
+task throw()
+{
+	SensorValue[thrower]=1;
+	wait10Msec(25);
+	SensorValue[thrower]=0;
+	SensorValue[throwerIN]=1;
+	stopTask(throw);
+}
+
+task PistonUp()
+{
+	//stopTask(throw);
+	startTask(MGUp);
+	wait10Msec(50);
+	SensorValue[piston]=1;
+
+	stopTask(PistonUp);
+}
+
+task PistonUpAuto()
+{
+	SensorValue[piston]=1;
+
+	stopTask(PistonUp);
 }

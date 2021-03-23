@@ -30,15 +30,15 @@ else if (abs(vexRT[Ch2])>10 && vexRT[Btn5U]==0)
 {if(vexRT[Ch2]>0){dir=1;}
 	else{dir=-1;}
 	if (abs(SensorValue[Rencoder])<(abs(SensorValue[Lencoder]))){Loffset=-dir*10; Roffset=0;}
-		else if (abs(SensorValue[Lencoder])<(abs(SensorValue[Rencoder]))){Loffset=0; Roffset=-dir*10;}
-		else{Loffset=0; Roffset=0;}
-speed=vexRT[Ch2]*.85;
-		motor[rightDriveBack]=speed+Roffset;
-		motor[powerCD]=speed+Roffset;
-		motor[rightDriveFrontMID]=speed+Roffset;
-		motor[leftDriveBack]=speed+Loffset;
-		motor[powerAB]=speed+Loffset;
-		motor[leftDriveFrontMID]=speed+Loffset;
+	else if (abs(SensorValue[Lencoder])<(abs(SensorValue[Rencoder]))){Loffset=0; Roffset=-dir*10;}
+	else{Loffset=0; Roffset=0;}
+	speed=vexRT[Ch2]*.85;
+	motor[rightDriveBack]=speed+Roffset;
+	motor[powerCD]=speed+Roffset;
+	motor[rightDriveFrontMID]=speed+Roffset;
+	motor[leftDriveBack]=speed+Loffset;
+	motor[powerAB]=speed+Loffset;
+	motor[leftDriveFrontMID]=speed+Loffset;
 
 }
 else
@@ -58,40 +58,61 @@ else
 
 if(vexRT[Btn8R]==0&&vexRT[Btn8D]==1)
 {
-	SensorValue[piston]=0;
-	wait10Msec(4);
-	motor[rightMG]=127;
-	motor[leftMG]=127;
-	mgPOS=0;
+	if(SensorValue[MGlimitD]==0&&SensorValue[MGlimit]==1)
+	{
+		stopTask(MGUp);
+		startTask(MGDown);
+	}
+	else if(SensorValue[MGlimitD]==1&&SensorValue[MGlimit]==0)
+	{
+		motor[rightMG]=62;
+		motor[leftMG]=62;
+	}
+	else
+{
+	}
+	//SensorValue[piston]=0;
+	//wait10Msec(4);
+	//motor[rightMG]=127;
+	//motor[leftMG]=127;
+	//	mgPOS=0;
+
 }
 else if(vexRT[Btn8R]==1&&vexRT[Btn8D]==0&&SensorValue[MGlimit]==0)
 {
-	motor[rightMG]=-127;
-	motor[leftMG]=-127;
-	SensorValue[piston]=1;
-	mgPOS=1;
+
+	stopTask(MGDown);
+	startTask(MGUp);
+
+	//motor[rightMG]=-127;
+	//motor[leftMG]=-127;
+	//SensorValue[piston]=1;
+	//mgPOS=1;
 }
 else if(vexRT[Btn8R]==1&&vexRT[Btn8D]==0&&SensorValue[MGlimit]==1)
-{
-	motor[rightMG]=-30;
-	motor[leftMG]=-30;
-}
-else if(mgPOS==1)
 {
 	motor[rightMG]=-15;
 	motor[leftMG]=-15;
 }
+//else if(mgPOS==1)
+//{
+//	motor[rightMG]=-15;
+//	motor[leftMG]=-15;
+//}
 else
 {
-	motor[rightMG]=0;
-	motor[leftMG]=0;
 }
 
 if(vexRT[Btn8L]==1)
-{SensorValue[piston]=1;}
+{SensorValue[piston]=0;}
 
 if(vexRT[Btn8U]==1)
-{SensorValue[piston]=0;}
+{
+	if(SensorValue[MGlimitD]==1)
+		startTask(PistonUp);
+	else
+		SensorValue[piston]=1;
+}
 
 if(vexRT[Btn7D]==1)
 {motor[ConeGrab]=90;}

@@ -3,11 +3,12 @@
 #pragma config(Sensor, in2,    RLine,          sensorLineFollower)
 #pragma config(Sensor, in3,    LLine,          sensorLineFollower)
 #pragma config(Sensor, in4,    BLine,          sensorLineFollower)
-#pragma config(Sensor, in7,    gyro,           sensorGyro)
 #pragma config(Sensor, in8,    BackUpBattery,  sensorAnalog)
 #pragma config(Sensor, dgtl1,  piston,         sensorDigitalOut)
 #pragma config(Sensor, dgtl2,  MGlimit,        sensorTouch)
-#pragma config(Sensor, dgtl3,  kicker,         sensorDigitalOut)
+#pragma config(Sensor, dgtl3,  thrower,        sensorDigitalOut)
+#pragma config(Sensor, dgtl4,  throwerIN,      sensorDigitalOut)
+#pragma config(Sensor, dgtl5,  MGlimitD,       sensorTouch)
 #pragma config(Sensor, dgtl11, RLED,           sensorDigitalOut)
 #pragma config(Sensor, dgtl12, GLED,           sensorDigitalOut)
 #pragma config(Sensor, I2C_1,  Rencoder,       sensorQuadEncoderOnI2CPort,    , AutoAssign )
@@ -71,6 +72,11 @@ void pre_auton()
 
 	// All activities that occur before the competition starts
 	// Example: clearing encoders, setting servo positions, ...
+	 SensorType[in1] = sensorNone;
+  wait1Msec(1000);
+  //Reconfigure Analog Port 8 as a Gyro sensor and allow time for ROBOTC to calibrate it
+  SensorType[in1] = sensorGyro;
+  wait1Msec(2000);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -97,7 +103,7 @@ task autonomous()
 //Test(-40,40, 1);wait1Msec(2000);
 //}
 //#include "auto.c";
-#include "Skills.c";
+#include "Double Pickup Auto.c";
 while(1){}
 }
 
@@ -114,7 +120,7 @@ while(1){}
 task usercontrol()
 {int mgPOS=0;
 stopTask(autonomous);
-SensorValue[kicker]=0;
+//SensorValue[kicker]=0;
  SensorValue[GLED]=1; SensorValue[RLED]=0;
 int Loffset, Roffset, speed,dir;
 int ddir=1;
