@@ -49,12 +49,11 @@ bool bStopTasksBetweenModes = true;
 static void displayStatusAndTime();
 
 task main()
-{			//SensorValue[claw]=1;							//CODE ADDED TO KEEP ROBOT CLAW CLOSE
+{
 	// Master CPU will not let competition start until powered on for at least 2-seconds
-	displayLCDCenteredString(0, "Robot");
-	displayLCDCenteredString(1, "Starting Up");
+	displayLCDCenteredString(0, "WRATH (\!/)");
+	displayLCDCenteredString(1, "STARTING UP");
 	wait1Msec(2000);
-
 
 	pre_auton();
 
@@ -79,7 +78,7 @@ task main()
 				sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
 				displayNextLCDString(mainBattery);
 				displayLCDString(1, 0, "E:");
-				sprintf(batteryTwo, "%1.2f%c", SensorValue[Pexpander]/280.0, 'V');    //Build the value to be displayed
+				sprintf(batteryTwo, "%1.2f%c", SensorValue[BackUpBattery]/280.0, 'V');    //Build the value to be displayed
 				displayNextLCDString(batteryTwo);
 				if (alliance == 0) displayLCDString(0, 10, "BLUE:");
 				if (alliance == 1) displayLCDString(0, 11, "RED:");
@@ -122,7 +121,7 @@ task main()
 
 			// Waiting for autonomous phase to end
 			while (bIfiAutonomousMode && !bIfiRobotDisabled)
-			{		//	SensorValue[claw]=1;							//CODE ADDED TO KEEP ROBOT CLAW CLOSE
+			{
 				if (!bVEXNETActive)
 				{
 				  if (nVexRCReceiveState == vrNoXmiters) // the transmitters are powered off!!

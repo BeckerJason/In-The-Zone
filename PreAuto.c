@@ -1,14 +1,23 @@
 //GYRO SET-UP////////////////
-SensorType[in7] = sensorNone;
+SensorType[in1] = sensorNone;
 wait1Msec(1000);
-SensorType[in7] = sensorGyro;
+SensorType[in1] = sensorGyro;
 wait1Msec(2000);
 /////////////////////////////
+SensorValue[FBEnc]=0;
+SensorValue[LiEnc]=0;
+SensorValue[REnc]=0;
+SensorValue[LEnc]=0;
+wait1Msec(150);
+
+KillALL();
+break;
+
 if(DEBUG)
 {
-	alliance = 3;
+alliance = 3;
 }else
-{
+	{
 	int count = 0;
 	int step = 1;
 	bLCDBacklight = true;
@@ -132,17 +141,17 @@ if(DEBUG)
 			/////////////////////////
 			if (count == 0)
 			{
-				displayLCDCenteredString(0, "Autonomous: Near");
+				displayLCDCenteredString(0, "Autonomous: 1");
 				displayLCDCenteredString(1, "<D> <ENTER> <U>");
 			}
 			else if (count == 1)
 			{
-				displayLCDCenteredString(0, "Autonomous: Far");
+				displayLCDCenteredString(0, "Autonomous: 2");
 				displayLCDCenteredString(1, "<D> <ENTER> <U>");
 			}
 			else if (count == 2)
 			{
-				displayLCDCenteredString(0, "Autonomous: F2r");
+				displayLCDCenteredString(0, "Autonomous: 3");
 				displayLCDCenteredString(1, "<D> <ENTER> <U>");
 			}
 			else if (count == 3)
@@ -165,6 +174,5 @@ if(DEBUG)
 			step = 3;
 		}
 		wait1Msec(250);
-
 	}
-}//END DEBUG ELSE
+ }//END DEBUG ELSE
