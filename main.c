@@ -151,6 +151,7 @@ task autonomous()
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+
 task usercontrol()
 {int mgPOS=0;
 stopTask(autonomous);
@@ -158,6 +159,7 @@ stopTask(autonomous);
  SensorValue[GLED]=1; SensorValue[RLED]=0;
 float Loffset, Roffset, speed,dir;
 int ddir=1;
+startTask(POTTop);
 while (true)
 	{
 	#include "Driver.c";

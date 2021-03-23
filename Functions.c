@@ -131,8 +131,6 @@ void MG(int dir)
 void M(float dist, int vel, int MobileGoal)
 {SensorValue[Rencoder]=0;
 	SensorValue[Lencoder]=0;
-	SensorValue[I2C_1]=0;
-	SensorValue[I2C_2]=0;
 	dist= (dist*261.33)/(4*3.1415);///Change 261 (IME Turbo) for 360 for external Motor controllers
 
 	//int x;
@@ -402,15 +400,15 @@ task PistonUpAuto()
 
 task POTStall()
 {while(1)
-{if(SensorValue[POT]<850){motor[ConeGrab]=10;}
-else if(SensorValue[POT]>1000){motor[ConeGrab]=-10;}
+{if(SensorValue[POT]<2000){motor[ConeGrab]=10;}
+else if(SensorValue[POT]>2400){motor[ConeGrab]=-10;}
 else{motor[ConeGrab]=0;}
 wait1Msec(20);
 }
 }
 task POTTop()
-{while(SensorValue[POT]<850){motor[ConeGrab]=90;wait1Msec(20);}
-while(SensorValue[POT]>1000){motor[ConeGrab]=-90;wait1Msec(20);}
+{while(SensorValue[POT]<2000){motor[ConeGrab]=90;wait1Msec(20);}
+while(SensorValue[POT]>2400){motor[ConeGrab]=-90;wait1Msec(20);}
 motor[ConeGrab]=0;
 startTask(POTStall);
 stopTask(POTTop);
