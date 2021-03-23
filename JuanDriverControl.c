@@ -1,14 +1,10 @@
-float PMult/*, SMult,Pin*/; //primary multiplier, secondary multiplier
-float MainBattery=nImmediateBatteryLevel; //Main Battery input
-float Batt=MainBattery/1000; //Division by 1000 to get true voltage value of battery
-PMult=PCheck(Batt); //Create Multiplier Based On Battery Voltage
+int bL,	bR,	l, cp, cm, mg, c, as;
 
-int bL,	bR,	l, cp, cm, mg, c;
 //#### DRIVE BASE ########################################################################
 if(vexRT[Ch3] > 10 || vexRT[Ch4] > 10 || vexRT[Ch3] < -10 || vexRT[Ch4] < -10) //JOYSTICK DEADBAND
 {
-	bL = vexRT[Ch3]*PMult + vexRT[Ch4]*PMult;		//Base Left Side
-	bR = vexRT[Ch3]*PMult - vexRT[Ch4]*PMult;		//Base Right Side
+	bL = vexRT[Ch3]*sm + vexRT[Ch4]*sm;		//Base Left Side
+	bR = vexRT[Ch3]*sm- vexRT[Ch4]*sm;		//Base Right Side
 }
 else
 {
@@ -20,7 +16,7 @@ else
 //~~~~ LIFT VALUES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if(vexRT[Ch2] > 15 || vexRT[Ch2] < -15)
 {
-	l = vexRT[Ch2]*PMult; //Lift Motors
+	l = vexRT[Ch2]*pm; //Lift Motors
 }
 else
 {
@@ -43,31 +39,31 @@ cp=1;			//Claw Preset Down*/
 cp=0; //TEMPORARY FOR CLAW PRESET
 if (vexRT[Btn6U]==1&&vexRT[Btn6D]==0)
 {
-	cm=127*PMult;
+	cm=127*pm;
 }
 else if (vexRT[Btn6D]==1&&vexRT[Btn6U]==0)
 {
-	cm=-127*PMult;
+	cm=-127*pm;
 }
 else
 {
-	cm=10;
+	cm=10*pm;
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 //@@@@ MOBILE GOAL @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-if (vexRT[Btn8D]==1&&vexRT[Btn8U]==0)
+if (vexRT[Btn8D]==1&&vexRT[Btn8R]==0)
 {
-	mg=100*PMult; //Mobile Goal Up
+	mg=127*pm; //Mobile Goal Up
 }
-else if (vexRT[Btn8U]==1&&vexRT[Btn8D]==0)
+else if (vexRT[Btn8R]==1&&vexRT[Btn8D]==0)
 {
-	mg=-127*PMult; //Mobile Goal Down
+	mg=-127*pm; //Mobile Goal Down
 }
 else
 {
-	mg=15*PMult;		//Value To Keep Mobile Goal Back
+	mg=15*pm;		//Value To Keep Mobile Goal Back
 }
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -75,5 +71,23 @@ else
 if (vexRT[Btn5U]==1){c=1;} //Claw Close
 else{c=0;}//Claw Open
 //########################################################################
-DoB(	bL,	bR); 				//Base Left Side, Base Right Side
-AoB(l, cp, cm, mg, c);	// Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+//$$$ AUTO STACK $$$$$$$$$$$$$$$$$$$$
+if(vexRT[Btn8L]==1)
+{as=1;}
+else {as=0;}
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+if (SensorValue[Climit]==1)
+{SensorValue[enc]=0;}
+
+
+if (as==1)
+{Do(	0,	0,	0, 0, -15, 0, as, pm,sm); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+	//writeDebugStreamLine("Do(%d, %d, %d, %d, %d, %d, %d, pm, sm);",	0,	0,	0,  0,0, 0, as);
+}
+else
+{
+	Do(	bL,	bR,	l,cm, mg, c, as,pm,sm); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+	//writeDebugStreamLine("Do(%d, %d, %d, %d, %d, %d, %d, pm, sm);",	bL,	bR,	l, cm, mg, c, as);
+}
