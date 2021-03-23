@@ -25,7 +25,7 @@ void ForwardToPole(float speed)
 
 			EncoderValueL=abs(SensorValue[Lencoder]);
 			EncoderValueR=abs(SensorValue[Rencoder]);
-			wait1Msec(350);
+			wait1Msec(250);
 	}
 	motor[rightDriveBack]=0;
 	motor[powerCD]=0;
@@ -400,15 +400,15 @@ task PistonUpAuto()
 
 task POTStall()
 {while(1)
-{if(SensorValue[POT]<2000){motor[ConeGrab]=10;}
-else if(SensorValue[POT]>2400){motor[ConeGrab]=-10;}
+{if(SensorValue[POT]<1900){motor[ConeGrab]=10;}
+else if(SensorValue[POT]>2100){motor[ConeGrab]=-10;}
 else{motor[ConeGrab]=0;}
 wait1Msec(20);
 }
 }
 task POTTop()
-{while(SensorValue[POT]<2000){motor[ConeGrab]=90;wait1Msec(20);}
-while(SensorValue[POT]>2400){motor[ConeGrab]=-90;wait1Msec(20);}
+{while(SensorValue[POT]<1900){motor[ConeGrab]=90;wait1Msec(20);}
+while(SensorValue[POT]>2100){motor[ConeGrab]=-90;wait1Msec(20);}
 motor[ConeGrab]=0;
 startTask(POTStall);
 stopTask(POTTop);

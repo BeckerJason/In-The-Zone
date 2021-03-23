@@ -1,16 +1,15 @@
 
 task FarRightAuto()
 {
-	////////////////////////////Code for last 2 MG////////////////////////////////////////////////////
-	/////////////////////////////Code to grab 7&8 MG////////////////////////////////
-	M(5,50,0);
+	///////////////////////////////Code to grab 5&6 MG////////////////////////////////
+	M(6,50,0);
 	wait1Msec(300);
 	T(90,65);
-	motor[rightMG]=10;////These lines make sure the MG is Down
-	motor[leftMG]=10;///// Here too
+	motor[rightMG]=30;////These lines make sure the MG is Down
+	motor[leftMG]=30;///// Here too
 	///////////Move to get second mobile goals
 	wait1Msec(100);
-	M(5,40,1);
+	M(5,80,1);
 	RLineTrack(70);
 	wait1Msec(50);
 	motor[rightMG]=0;////These lines make sure the MG stops
@@ -26,21 +25,20 @@ task FarRightAuto()
 	stopTask(POTStall);
 	SensorValue[Claw]=1;
 	motor[ConeGrab]=127;
-	wait1Msec(400);//shortened from 800
+	wait1Msec(600);//shortened from 800
 	M(5,50,0);
 	SensorValue[Claw]=0;
 	wait1Msec(100);//shortened from 200
 	startTask(POTTop);
 	startTask(MGUpAuto);
-	while(SensorValue[MGlimit]==0){}
-	//M(-7,50,0);
-	wait1Msec(100);
+	//while(SensorValue[MGlimit]==0){}
+	wait1Msec(1000);
 	SensorValue[in1]=0;
 
 	//////////////Code For Turning To Grab MG On Side
-	T(-80,60);
+	T(-80,100);
 	wait1Msec(100);
-	M(6,40,0);
+	M(2,40,0);
 	wait1Msec(100);
 	//T(25,60);
 
@@ -48,7 +46,6 @@ task FarRightAuto()
 	TrackMG(1);
 	TrackMG(0);
 	TrackMG(1);
-	TrackMG(0);
 	motor[rightDriveBack]=-50;
 	motor[powerCD]=-50;
 	motor[rightDriveFrontMID]=-50;
@@ -65,21 +62,25 @@ task FarRightAuto()
 
 
 	wait1Msec(100);
-	M(5,40,0);
-	//LineTrack(40,0);
-	M(6,40,1);
+	M(11,40,0);
 	stopTask(POTStall);
-	motor[ConeGrab]=-100;
-	M(6,40,1);							//////////While claw coming down holding cone moving forward stack on second mg
-	//motor[ConeGrab]=-127;
+	motor[ConeGrab]=-127;
+	M(3,40,1);							//////////While claw coming down holding cone moving forward stack on second mg
+	motor[ConeGrab]=0;
+	M(2,40,1);
 	wait1Msec(300);
 	SensorValue[Claw]=1;	//drop cone
 	wait1Msec(100);
 	startTask(POTTop);
 	wait1Msec(400);
+	M(1,60,1);
 	SensorValue(piston)=1;
 	wait1Msec(100);
-	T(-40,60);
+	T(-35,100);
+	wait1Msec(100);
+	M(8,60,0);
+	wait1Msec(100);
+	//T(-10,100);
 	wait1Msec(100);
 	//////NEW CODE/////
 	////////////////////FACING THE SCORING ZONE
@@ -90,23 +91,28 @@ task FarRightAuto()
 	M(25,100,1);
 	//M(22,35,0);
 	///////////////////////////////////
-	ArcTurn(55,9,'f','r');
-	ArcTurn(55,9,'f','l');
+	ArcTurn(55,10,'f','r');
+	ArcTurn(55,10,'f','l');
 
 
 
 	T(35,50);
 	M(1,50,1);
-	ForwardToPole(25);
+	//ForwardToPole(25);
 	M(10,100,1);
 	playSound(soundBeepBeep);
 	ForwardToPole(60);
 	startTask(throw);
 	wait1Msec(200);
 	startTask(MGDown);
-	wait1Msec(150);//THIS MUST STAY
+	//wait1Msec(150);//THIS MUST STAY
 	M(-22,75,0);//6 scored
-	wait1Msec(100);//4 scored//////////////////////////7 AND 8 MG SCORED//////////////////////////////////////////////////
+	wait1Msec(100);//4 scored//////////////////////////5 AND 6 MG SCORED//////////////////////////////////////////////////
+
+	T(80,70);
+	M(-40,70,1);
+T(25,60);
+	BackUpWall();
 	stopTask(FarRightAuto);
 }
 
@@ -114,14 +120,14 @@ task FarRightAuto()
 task FarLeftAuto()
 {
 	///////////////////////////////Code to grab 5&6 MG////////////////////////////////
-	M(5,50,0);
+	M(6,50,0);
 	wait1Msec(300);
 	T(90,65);
-	motor[rightMG]=10;////These lines make sure the MG is Down
-	motor[leftMG]=10;///// Here too
+	motor[rightMG]=30;////These lines make sure the MG is Down
+	motor[leftMG]=30;///// Here too
 	///////////Move to get second mobile goals
 	wait1Msec(100);
-	M(5,40,1);
+	M(5,80,1);
 	RLineTrack(70);
 	wait1Msec(50);
 	motor[rightMG]=0;////These lines make sure the MG stops
@@ -137,21 +143,20 @@ task FarLeftAuto()
 	stopTask(POTStall);
 	SensorValue[Claw]=1;
 	motor[ConeGrab]=127;
-	wait1Msec(400);//shortened from 800
+	wait1Msec(600);//shortened from 800
 	M(5,50,0);
 	SensorValue[Claw]=0;
 	wait1Msec(100);//shortened from 200
 	startTask(POTTop);
 	startTask(MGUpAuto);
-	while(SensorValue[MGlimit]==0){}
-	//M(-7,50,0);
-	wait1Msec(100);
+	//while(SensorValue[MGlimit]==0){}
+	wait1Msec(1000);
 	SensorValue[in1]=0;
 
 	//////////////Code For Turning To Grab MG On Side
-	T(-80,60);
+	T(-80,100);
 	wait1Msec(100);
-	M(6,40,0);
+	M(2,40,0);
 	wait1Msec(100);
 	//T(25,60);
 
@@ -159,7 +164,6 @@ task FarLeftAuto()
 	TrackMG(1);
 	TrackMG(0);
 	TrackMG(1);
-	TrackMG(0);
 	motor[rightDriveBack]=-50;
 	motor[powerCD]=-50;
 	motor[rightDriveFrontMID]=-50;
@@ -176,25 +180,25 @@ task FarLeftAuto()
 
 
 	wait1Msec(100);
-	M(5,40,0);
-	//LineTrack(40,0);
-	M(6,40,1);
+	M(11,50,0);
 	stopTask(POTStall);
-	motor[ConeGrab]=-100;
-	M(6,40,1);							//////////While claw coming down holding cone moving forward stack on second mg
-	//motor[ConeGrab]=-127;
+	motor[ConeGrab]=-127;
+	M(3,40,1);							//////////While claw coming down holding cone moving forward stack on second mg
+	motor[ConeGrab]=0;
+	M(2,40,1);
 	wait1Msec(300);
 	SensorValue[Claw]=1;	//drop cone
 	wait1Msec(100);
 	startTask(POTTop);
 	wait1Msec(400);
+	M(1,60,1);
 	SensorValue(piston)=1;
 	wait1Msec(100);
-	T(-30,60);
+	T(-35,100);
 	wait1Msec(100);
 	M(8,60,0);
 	wait1Msec(100);
-	T(-20,60);
+	//T(-10,100);
 	wait1Msec(100);
 	//////NEW CODE/////
 	////////////////////FACING THE SCORING ZONE
@@ -205,26 +209,27 @@ task FarLeftAuto()
 	M(25,100,1);
 	//M(22,35,0);
 	///////////////////////////////////
-	ArcTurn(55,9,'f','r');
-	ArcTurn(55,9,'f','l');
+	ArcTurn(55,10,'f','r');
+	ArcTurn(55,10,'f','l');
 
 
 
 	T(35,50);
 	M(1,50,1);
-	ForwardToPole(25);
+	//ForwardToPole(25);
 	M(10,100,1);
 	playSound(soundBeepBeep);
 	ForwardToPole(60);
 	startTask(throw);
 	wait1Msec(200);
 	startTask(MGDown);
-	wait1Msec(150);//THIS MUST STAY
+	//wait1Msec(150);//THIS MUST STAY
 	M(-22,75,0);//6 scored
 	wait1Msec(100);//4 scored//////////////////////////5 AND 6 MG SCORED//////////////////////////////////////////////////
 
-	T(105,60);
-	M(-2,70,1);
+	T(90,70);
+	M(-30,70,1);
+	T(25,60);
 	BackUpWall();
 	startTask(FarRightAuto);
 	stopTask(FarLeftAuto);
@@ -235,11 +240,11 @@ task FarLeftAuto()
 task MidLeftAuto()
 {	motor[rightMG]=10;////These lines make sure the MG is Down
 	motor[leftMG]=10;///// Here too
-	M(10,75,1);//(float dist, int vel, int MobileGoal)
+	M(14,75,1);//(float dist, int vel, int MobileGoal)
 	stopTask(POTStall);
 	SensorValue[Claw]=1;
 	motor[ConeGrab]=127;
-	M(24,75,1);//(float dist, int vel, int MobileGoal)
+	M(20,75,1);//(float dist, int vel, int MobileGoal)
 	startTask(MGUpAuto);//First MID MG RIGHT pickup
 	M(10,50,1);
 	SensorValue[Claw]=0;
@@ -269,12 +274,12 @@ task MidLeftAuto()
 	wait1Msec(300);//shortened from 700
 	M(10,100,1);
 	playSound(soundBeepBeep);
-	ForwardToPole(50);
+	ForwardToPole(45);
 	Motors(0,0);
 	startTask(throw);
 	wait10Msec(25);
 	startTask(MGDown);
-	wait1Msec(150);//THIS MUST STAY
+	wait1Msec(100);//THIS MUST STAY
 	M(-24,75,0);//4 scored
 
 
@@ -327,7 +332,7 @@ task MidRightAuto()
 
 	M(10,100,1);
 	playSound(soundBeepBeep);
-	ForwardToPole(50);
+	ForwardToPole(45);
 	wait1Msec(100);//shortened from 200
 	startTask(MGDown);
 	wait1Msec(150);//THIS MUST STAY
