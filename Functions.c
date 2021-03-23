@@ -39,7 +39,7 @@ void D(	int bL,int	bR,int	l,int cm,int mg,int c)
 
 
 }
-
+//CONTROLS LIFT//
 void L(int count,int l,int lim)
 {if (lim==1)
 	{while (SensorValue[limit]==0)
@@ -81,6 +81,13 @@ void L(int count,int l,int lim)
 	motor[leftArm2] = 10*pr.mult;
 	motor[rightArm1] = 10*pr.mult;
 	motor[rightArm2] = 10*pr.mult;
+}
+//POWER THE LIFT
+void liftCont(int power){
+	motor[leftArm1] = power;
+	motor[leftArm2] = power;
+	motor[rightArm1] = power;
+	motor[rightArm2] = power;
 }
 void DS()
 {
@@ -316,8 +323,8 @@ void T(int deg,int speed, int time)
 }
 
 
-void PL()// Primary Voltage Mult, Secondary Voltage Mult
-{	for (int x=0;x<10&&vexRT[Btn7R]==0;x++)
+void PL(int cones)// Primary Voltage Mult, Secondary Voltage Mult
+{	for (int x=0;x<cones&&vexRT[Btn7R]==0;x++)
 	{
 		motor[LM] = 0;
 		motor[L1] = 0;
@@ -357,7 +364,7 @@ void PL()// Primary Voltage Mult, Secondary Voltage Mult
 		motor[rightArm] =127*pr.mult;}
 		*/
 		SensorValue[claw]=1;
-		wait1Msec(300);
+		wait1Msec(200);
 		while(SensorValue[IR] ==0&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
 		{
 			motor[leftArm1] = 127*pr.mult;
@@ -374,7 +381,7 @@ void PL()// Primary Voltage Mult, Secondary Voltage Mult
 			motor[ClawM]=127*pr.mult;
 		}
 		writeDebugStreamLine("3");
-		wait1Msec(125);
+		wait1Msec(75);
 		//while(SensorValue[sonar] <  13|| SensorValue[sonar] >50 &&vexRT[Btn6D]==0 )
 		//{motor[leftArm1] = 127*pr.mult;
 		//motor[leftArm2] = 127*pr.mult;
@@ -401,7 +408,7 @@ void PL()// Primary Voltage Mult, Secondary Voltage Mult
 		wait1Msec(100);
 		SensorValue[claw]=0;
 		//ClawStep=4;
-		wait1Msec(250);
+		wait1Msec(150);
 		/*	while(SensorValue[sonar] >1 && SensorValue[sonar] <7 &&vexRT[Btn5D]==0 ) 		//make the arm go up over the cones
 
 		{motor[leftArm1] = -127*pr.mult;
@@ -419,10 +426,10 @@ void PL()// Primary Voltage Mult, Secondary Voltage Mult
 		if(SensorValue[limit] ==0)
 		{
 			while(SensorValue[limit] ==0&& time1(T1)<2000&&vexRT[Btn5D]==0&&vexRT[Btn7R]==0)
-			{motor[leftArm1] =-70*pr.mult;
-				motor[leftArm2] = -70*pr.mult;
-				motor[rightArm1] =-70*pr.mult;
-				motor[rightArm2] =-70*pr.mult;}
+			{motor[leftArm1] =-50*pr.mult;
+				motor[leftArm2] = -50*pr.mult;
+				motor[rightArm1] =-50*pr.mult;
+				motor[rightArm2] =-50*pr.mult;}
 		}
 		//claw down preset
 
@@ -502,13 +509,12 @@ void S()// Primary Voltage Mult, Secondary Voltage Mult
 	{motor[ClawM]=127*pr.mult;}
 	motor[ClawM]=10*pr.mult;
 	//SensorValue[enc]=0;
-	//claw open
+	//claw openz
 	wait1Msec(100);
 	SensorValue[claw]=0;
 	//ClawStep=4;
 	wait1Msec(250);
 	/*	while(SensorValue[sonar] >1 && SensorValue[sonar] <7 &&vexRT[Btn5D]==0 ) 		//make the arm go up over the cones
-
 	{motor[leftArm1] = -127*pr.mult;
 	motor[leftArm2] = -127*pr.mult;
 	motor[rightArm1] =-127*pr.mult;
@@ -543,7 +549,7 @@ void MGM(int speed, int time)
 	{motor[MG]=speed;}
 	motor[MG]=-10;
 }
-
+//4 BAR CONTROL//
 void CM(int count, int speed, int lim)
 {
 	//int T3;
@@ -563,7 +569,7 @@ void CM(int count, int speed, int lim)
 	}
 	motor[ClawM]=10*pr.mult;
 }
-
+//CLAW CONTROL//
 void C(int val)
 {if (val==1){SensorValue[claw]=1;}
 	else{SensorValue[claw]=0;}
@@ -571,17 +577,18 @@ void C(int val)
 
 void IR2Sense()
 {
-	while (SensorValue[IR2]==1)
+	while (SensorValue[IR2]==1)		//if robot doesnt see wall move forward
 	{		motor[LM] = -50*se.mult;
 		motor[L1] =  -50*se.mult;
 		motor[RM] = -50*se.mult;
 		motor[R1] =  -50*se.mult;
 	}
-	while (SensorValue[IR2]==0)
-	{		motor[LM] = 50*se.mult;
-		motor[L1] =  50*se.mult;
-		motor[RM] = 50*se.mult;
-		motor[R1] =  50*se.mult;
+	wait1Msec(100);
+	while (SensorValue[IR2]==0)    //if robot sees wall back up
+	{		motor[LM] = 75*se.mult;
+		motor[L1] =  75*se.mult;
+		motor[RM] = 75*se.mult;
+		motor[R1] =  75*se.mult;
 	}
 	motor[LM] = -50*se.mult;
 	motor[L1] =  -50*se.mult;
@@ -699,7 +706,7 @@ void MoveToPosition(float Xf, float Yf, int speed,int MoveSpeed, int time, int a
 				motor[R1] = -adir*speed*se.mult/3;
 			}
 
-//BRAKE
+			//BRAKE
 			motor[LM] = -adir*10*se.mult;
 			motor[L1] = -adir*10*se.mult;
 			motor[RM] = adir*10*se.mult;
@@ -735,8 +742,8 @@ void MoveToPosition(float Xf, float Yf, int speed,int MoveSpeed, int time, int a
 				motor[RM] = -adir*speed*se.mult;
 				motor[R1] = -adir*speed*se.mult;
 			}
-						//WAIT TO OVERTURN AND THEN COMPENSATE RIGHT
-	wait1Msec(time);
+			//WAIT TO OVERTURN AND THEN COMPENSATE RIGHT
+			wait1Msec(time);
 
 			adir=1;
 
@@ -756,7 +763,7 @@ void MoveToPosition(float Xf, float Yf, int speed,int MoveSpeed, int time, int a
 				motor[R1] = -adir*speed*se.mult/2;
 			}
 			//WAIT THEN COMPENSATE LEFT
-				wait1Msec(time);
+			wait1Msec(time);
 			adir=-1;
 			writeDebugStreamLine("Left");
 			while ((SensorValue[gyro]*0.973/10+360) %360 >Angle)
@@ -857,7 +864,7 @@ void MoveToPosition(float Xf, float Yf, int speed,int MoveSpeed, int time, int a
 				motor[R1] = -adir*speed*se.mult/3;
 			}
 
-//BRAKE
+			//BRAKE
 			motor[LM] = -adir*10*se.mult;
 			motor[L1] = -adir*10*se.mult;
 			motor[RM] = adir*10*se.mult;
@@ -887,8 +894,8 @@ void MoveToPosition(float Xf, float Yf, int speed,int MoveSpeed, int time, int a
 				motor[RM] = -adir*speed*se.mult;
 				motor[R1] = -adir*speed*se.mult;
 			}
-						//WAIT TO OVERTURN AND THEN COMPENSATE RIGHT
-	wait1Msec(time);
+			//WAIT TO OVERTURN AND THEN COMPENSATE RIGHT
+			wait1Msec(time);
 
 			adir=1;
 
@@ -908,7 +915,7 @@ void MoveToPosition(float Xf, float Yf, int speed,int MoveSpeed, int time, int a
 				motor[R1] = -adir*speed*se.mult/2;
 			}
 			//WAIT THEN COMPENSATE LEFT
-				wait1Msec(time);
+			wait1Msec(time);
 			adir=-1;
 			writeDebugStreamLine("Left");
 			while ((SensorValue[gyro]*0.973/10+360) %360 >Angle)
@@ -1049,7 +1056,20 @@ void MoveToPosition(float Xf, float Yf, int speed,int MoveSpeed, int time, int a
 	initial.yval = Yf;
 
 }
-
+//Fine tune the proportion value or change the function to either make point turns or include the middle line follower
+void FollowLine(int Initial)
+{
+	int left = 0, right = 0;
+	float LineMath = 0.02*(SensorValue[LineL]-SensorValue[LineR]);
+	int Speed = abs(LineMath);
+	if (LineMath < 0){left = -1; right =  1; 	}//TURN LEFT
+	else if (LineMath > 0){left = 1; right = -1;	}//TURN RIGHT
+	else{left =  1; right =  1;  }//MOVE STRAIGHT
+		motor[LM]     = Initial+(Speed*left);
+    motor[L1]      = Initial+(Speed*left);
+    motor[RM]    = Initial+(Speed*right);
+    motor[R1]     = Initial+(Speed*right);
+}
 
 
 //Forward 360 ticks speed 127 :: M(360,1,127, se.mult);
