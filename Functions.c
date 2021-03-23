@@ -1151,3 +1151,8 @@ void Move(int Vel, float dist)
 	motor[RM] = 0;
 	motor[R1] = 0;
 }
+
+void FB(int Vel)
+{motor[fb1]=Vel;
+	motor[fb2]=Vel;
+}
