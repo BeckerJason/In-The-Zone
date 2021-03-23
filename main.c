@@ -1,9 +1,12 @@
-#pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    gyro,           sensorGyro)
 #pragma config(Sensor, dgtl1,  piston,         sensorDigitalOut)
-#pragma config(Sensor, dgtl2,  MGlimit,         sensorTouch)
-#pragma config(Sensor, I2C_1,  Rencoder,       sensorQuadEncoderOnI2CPort,    , AutoAssign )
-#pragma config(Sensor, I2C_2,  Lencoder,       sensorQuadEncoderOnI2CPort,    , AutoAssign )
+#pragma config(Sensor, dgtl2,  MGlimit,        sensorTouch)
+#pragma config(Sensor, dgtl3,  kicker,         sensorDigitalOut)
+#pragma config(Sensor, dgtl11, RLED,           sensorDigitalOut)
+#pragma config(Sensor, dgtl12, GLED,           sensorDigitalOut)
+#pragma config(Sensor, I2C_1,  Rencoder,       sensorNone)
+#pragma config(Sensor, I2C_2,  Lencoder,       sensorNone)
+#pragma config(Motor,  port1,           ConeGrab,      tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           leftDriveFrontMID, tmotorVex393TurboSpeed_MC29, openLoop)
 #pragma config(Motor,  port3,           powerAB,       tmotorVex393TurboSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port4,           leftDriveBack, tmotorVex393TurboSpeed_MC29, openLoop)
@@ -33,7 +36,7 @@ int autonomousN = 5;
 /*                                                                           */
 /*  You may want to perform some actions before the competition starts.      */
 /*  Do them in the following function.  You must return from this function   */
-/*  or the autonomous and usercontrol tasks will not be started.  This       */
+/*  or the auto\nomous and usercontrol tasks will not be started.  This       */
 /*  function is only called once after the cortex has been powered on and    */
 /*  not every time that the robot is disabled.                               */
 /*---------------------------------------------------------------------------*/
@@ -66,8 +69,13 @@ void pre_auton()
 
 task autonomous()
 {clearDebugStream();
-#include "auto.c";
-while(1){/*Do nothing*/}
+while(1)
+{Test(40,40, 1);
+wait1Msec(2000);
+Test(-40,40, 1);wait1Msec(2000);
+}
+//#include "auto.c";
+while(1){}
 }
 
 /*---------------------------------------------------------------------------*/
@@ -83,8 +91,14 @@ while(1){/*Do nothing*/}
 task usercontrol()
 {int mgPOS=0;
 stopTask(autonomous);
-	while (true)
+SensorValue[kicker]=0;
+ SensorValue[GLED]=1; SensorValue[RLED]=0;
+int Loffset, Roffset, speed,dir;
+int ddir=1;
+while (true)
 	{
-		#include "drivercontrol.c";
-	}
+		//#include "JuanDriver.c";
+	//	#include "drivercontrol.c";
+	#include "Driver.c";
+		}
 }

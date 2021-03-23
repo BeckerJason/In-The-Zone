@@ -32,14 +32,15 @@ void MG(int dir)
 	}
 }
 
-void M(float dist)
+void M(float dist, int vel, int MobileGoal)
 {SensorValue[Rencoder]=0;
 	SensorValue[Lencoder]=0;
 	SensorValue[I2C_1]=0;
 	SensorValue[I2C_2]=0;
-	dist= (dist*360/*261.33*/)/(4*3.1415);///Change 261 (IME Turbo) for 360 for external Motor controllers
+	dist= (dist*261.33)/(4*3.1415);///Change 261 (IME Turbo) for 360 for external Motor controllers
 
 	int x;
+	int q=0;
 	int dir,Loffset, Roffset,speed;
 
 	if (dist<0){dir=1;}
@@ -48,16 +49,17 @@ void M(float dist)
 	//while(q<2)
 	//{
 	//wait1Msec(100);
-	while(abs(SensorValue[Lencoder])<(abs(dist))/*&&abs(SensorValue[gyro])!=(abs(dist)-50)*/)
+	clearTimer(T3);
+	while((abs(SensorValue[Lencoder])<(abs(dist))&&time1[T3]<3000)/*&&abs(SensorValue[gyro])!=(abs(dist)-50)*/)
 	{
-		if (abs(SensorValue[Rencoder])<(abs(SensorValue[Lencoder]))){Loffset=-dir*10; Roffset=0;}
-		else if (abs(SensorValue[Lencoder])<(abs(SensorValue[Rencoder]))){Loffset=0; Roffset=-dir*10;}
+		if (abs(SensorValue[Rencoder])<(abs(SensorValue[Lencoder]))){Loffset=-dir*5; Roffset=0;}
+		else if (abs(SensorValue[Lencoder])<(abs(SensorValue[Rencoder]))){Loffset=0; Roffset=-dir*5;}
 		else{Loffset=0; Roffset=0;}
 
 		x=(dist-SensorValue[Lencoder])/*/18*/;
 		//if ((pow(x,2))%127>0){speed=-dir*127;}//-127cos(pow((x/57),2)+(127/2)
 		//	else{speed=-dir*pow(x,2);}
-		speed=65;/*-100*cos(x/(dist/5))/2+100/2;*/  //abs((80*x)/50);//pow(x/18),2);//127*cos(x/57)/2+(127/2);
+		speed=vel;/*-100*cos(x/(dist/5))/2+100/2;*/  //abs((80*x)/50);//pow(x/18),2);//127*cos(x/57)/2+(127/2);
 		speed=-dir*speed;
 
 writeDebugStreamLine("%d, %d", Loffset, Roffset);
@@ -69,7 +71,8 @@ writeDebugStreamLine("%d, %d", Loffset, Roffset);
 		motor[leftDriveFrontMID]=speed+Loffset;
 
 	}
-	motor[rightDriveBack]=dir*50/2;
+	if (MobileGoal==0)
+{motor[rightDriveBack]=dir*50/2;
 	motor[powerCD]=dir*50/2;
 	motor[rightDriveFrontMID]=dir*50/2;
 	motor[leftDriveBack]=dir*50/2;
@@ -77,7 +80,8 @@ writeDebugStreamLine("%d, %d", Loffset, Roffset);
 	motor[leftDriveFrontMID]=dir*50/2;
 	//q++;
 	wait1Msec(100);
-	//}
+	}
+	else{}
 	motor[rightDriveBack]=0;
 	motor[powerCD]=0;
 	motor[rightDriveFrontMID]=0;
@@ -145,4 +149,67 @@ void T(float degree)
 void L(int val)
 {
 	SensorValue[piston]=val;
+}
+
+
+void Test(float dist, float vel, int MobileGoal)
+{SensorValue[Rencoder]=0;
+	SensorValue[Lencoder]=0;
+	dist= (dist*261.33)/(4*3.14);///Change 261 (IME Turbo) for 360 for external Motor controllers
+
+	float x;
+	//int q=0;
+	float dir,Loffset, Roffset,speed;
+
+	//if (dist<0){dir=-1;}
+	//else{dir=1;}//
+
+	//while(q<2)
+	//{
+	//wait1Msec(100);
+	clearTimer(T1);
+	while( time1[T1]<2000 && (abs(SensorValue[Lencoder])<(abs(dist))   )/*&&abs(SensorValue[gyro])!=(abs(dist)-50)*/)
+	{
+		x=(abs(dist)-abs(SensorValue[Lencoder]);
+			if (x<0){dir=-1; x=-x;}
+	else{dir=1;}
+	//
+		//if (x<0){dir=1:}
+		//else{dir=-1;}
+
+		//if ((pow(x,2))%127>0){speed=-dir*127;}//-127cos(pow((x/57),2)+(127/2)
+		//	else{speed=-dir*pow(x,2);}
+		speed=(-35)*cos(16*abs(x)/(abs(dist)*3.14)+5.75)+30;//vel;
+		speed=dir*speed;
+
+		if (abs(SensorValue[Rencoder])<(abs(SensorValue[Lencoder]))){Loffset=-speed/5; Roffset=0;}
+		else if (abs(SensorValue[Lencoder])<(abs(SensorValue[Rencoder]))){Loffset=0; Roffset=-speed/5;}
+		else{Loffset=0; Roffset=0;}
+
+writeDebugStreamLine("%f, %f", speed,x);
+		motor[rightDriveBack]=speed+Roffset;
+		motor[powerCD]=speed+Roffset;
+		motor[rightDriveFrontMID]=speed+Roffset;
+		motor[leftDriveBack]=speed+Loffset;
+		motor[powerAB]=speed+Loffset;
+		motor[leftDriveFrontMID]=speed+Loffset;
+wait1Msec(2);
+	}
+	if (MobileGoal==0)
+{motor[rightDriveBack]=dir*50/2;
+	motor[powerCD]=dir*50/2;
+	motor[rightDriveFrontMID]=dir*50/2;
+	motor[leftDriveBack]=dir*50/2;
+	motor[powerAB]=dir*50/2;
+	motor[leftDriveFrontMID]=dir*50/2;
+	//q++;
+	wait1Msec(100);
+	}
+	else{}
+	motor[rightDriveBack]=0;
+	motor[powerCD]=0;
+	motor[rightDriveFrontMID]=0;
+	motor[leftDriveBack]=0;
+	motor[powerAB]=0;
+	motor[leftDriveFrontMID]=0;
 }

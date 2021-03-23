@@ -79,7 +79,7 @@ task main()
 				sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
 				displayNextLCDString(mainBattery);
 				displayLCDString(1, 0, "E:");
-				sprintf(batteryTwo, "%1.2f%c", SensorValue[backupBattery]/280.0, 'V');    //Build the value to be displayed
+				sprintf(batteryTwo, "%1.2f%c", SensorValue[BackUpBattery]/280.0, 'V');    //Build the value to be displayed
 				displayNextLCDString(batteryTwo);
 				if (alliance == 0) displayLCDString(0, 10, "BLUE:");
 				if (alliance == 1) displayLCDString(0, 11, "RED:");
