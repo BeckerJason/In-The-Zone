@@ -36,6 +36,8 @@
 ///////////////////////////BEGIN INCLUDED FILES
 int alliance = 4;
 int autonomousN = 5;
+int AutoRun = 0;
+int Encoders = 0;
 #include "CompensationCheck.c";
 //VVVVVVVVVVVVVVVVVVVVVV Class Structure VVVVVVVVVVVVVVVV
 typedef struct
@@ -103,19 +105,18 @@ void pre_auton()
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 #include "ArcTurn.c";
+#include "Double Pickup Auto.c";
 task autonomous()
 {clearTimer(T4);
-	startTask(VoltageCheck);
+	//startTask(VoltageCheck);
 	clearDebugStream();
 
 	//!!!!!!!!!! CHECK VOLTAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	pr.mult=PCheck(nImmediateBatteryLevel/1000.0);
 	se.mult=SCheck(SensorValue[BackUpBattery]/280.0);
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-#include "Double Pickup Auto.c";
 	writeDebugStreamLine("%f",timer4);
-
+	startTask(MidRightAuto);
 	while(1){}
 }
 
@@ -132,12 +133,11 @@ task autonomous()
 
 task usercontrol()
 {	stopTask(autonomous);
+	startTask(VoltageCheck);
 	float Loffset, Roffset, speed,dir;
 	int ddir=1;
-	startTask(POTTop);
-	while (true)
+	while (1)
 	{
 #include "Driver.c";
-}
-
+	}
 }

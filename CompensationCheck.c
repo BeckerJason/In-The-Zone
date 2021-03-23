@@ -7,7 +7,7 @@ return PMult;
 
 float SCheck(float SVoltage)
 {//PVoltage=mainBattery;//(1.2*nImmediateBatteryLevel/1000.0);
-writeDebugStreamLine("%1.2f",SVoltage);
+//writeDebugStreamLine("%1.2f",SVoltage);
 float SMult=1;//((998.22/(SVoltage))/127);						//Multiplier for motors on Secondary Battery
 return SMult;
 }
