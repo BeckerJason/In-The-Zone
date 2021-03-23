@@ -1,3 +1,5 @@
+
+
 float PCheck(float PVoltage)
 {//PVoltage=mainBattery;//(1.2*nImmediateBatteryLevel/1000.0);
 //writeDebugStreamLine("%1.2f",PVoltage);
