@@ -1,8 +1,11 @@
+#pragma config(Sensor, in1,    gyro,           sensorGyro)
 #pragma config(Sensor, in8,    BackUpBattery,  sensorAnalog)
 #pragma config(Sensor, dgtl1,  enc,            sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  claw,           sensorDigitalOut)
 #pragma config(Sensor, dgtl4,  limit,          sensorTouch)
-#pragma config(Sensor, dgtl8,  Climit,         sensorTouch)
+#pragma config(Sensor, dgtl5,  Lenc,           sensorQuadEncoder)
+#pragma config(Sensor, dgtl7,  Renc,           sensorQuadEncoder)
+#pragma config(Sensor, dgtl9,  Climit,         sensorTouch)
 #pragma config(Sensor, dgtl10, IR,             sensorDigitalIn)
 #pragma config(Sensor, dgtl11, sonar,          sensorSONAR_inch)
 #pragma config(Motor,  port1,           RM,            tmotorVex393_HBridge, openLoop)
@@ -23,8 +26,11 @@
 #include "Functions.c";
 task main()
 {clearDebugStream();
-	//!!!!!!!!!! CHECK VOLTAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	SensorValue[enc]=0;
+	//##########   RECORD  ####################################################
+	int record=0;
+	//########################################################################
+	//!!!!!!!!!! CHECK VOLTAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	float pm, sm/*,Pin*/; //primary multiplier, secondary multiplier
 	float MainBattery=nImmediateBatteryLevel; //Main Battery input
 	float Batt=MainBattery/1000; //Division by 1000 to get true voltage value of battery
@@ -38,5 +44,6 @@ task main()
 		{
 			//#include "DriverControl.c";
 	#include "JuanDriverControl.c";
+//#include "Spin.c";
 	}
 }

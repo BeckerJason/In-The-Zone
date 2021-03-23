@@ -81,13 +81,16 @@ else {as=0;}
 if (SensorValue[Climit]==1)
 {SensorValue[enc]=0;}
 
+//if (vexRT
 
-if (as==1)
-{Do(	0,	0,	0, 0, -15, 0, as, pm,sm); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
-	//writeDebugStreamLine("Do(%d, %d, %d, %d, %d, %d, %d, pm, sm);",	0,	0,	0,  0,0, 0, as);
+if (as>0)
+{D(	0,	0,	0, 0, -15, 0, as, pm,sm); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+	if(record==1){writeDebugStreamLine("D(%d, %d, %d, %d, %d, %d, %d, pm, sm);",	0,	0,	0,  0,0, 0, as);}
+	else{}
 }
 else
 {
-	Do(	bL,	bR,	l,cm, mg, c, as,pm,sm); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
-	//writeDebugStreamLine("Do(%d, %d, %d, %d, %d, %d, %d, pm, sm);",	bL,	bR,	l, cm, mg, c, as);
+	D(	bL,	bR,	l,cm, mg, c, as,pm,sm); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+	if(record==1){writeDebugStreamLine("D(%d, %d, %d, %d, %d, %d, %d, pm, sm);",	bL,	bR,	l, cm, mg, c, as);}
+	else{}
 }
