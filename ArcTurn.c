@@ -5,8 +5,8 @@ void ArcTurn(float degree, float radius, char FBD, char LRD)
 	SensorValue[in1]=0;
 	//90 degrees
 
-	float xL, xR, speedL, speedR;
-	float Larcdist, Rarcdist,LR,dir,Loffset, Roffset,speed, Rmult, Lmult; //LeftRight, Forward Backward
+	float speedL, speedR;
+	float Larcdist, Rarcdist,LR,dir,Loffset, Roffset, Rmult, Lmult; //LeftRight, Forward Backward
 
 	if (LRD=='L' ||LRD=='l'){LR=-1.0;}   			////LEFT -1
 	else{LR=1.0;}//
@@ -14,11 +14,10 @@ void ArcTurn(float degree, float radius, char FBD, char LRD)
 	if (FBD=='F'||FBD=='f'){dir=1.0;}					////FORWARD 1
 	else{dir=-1.0;}
 	degree=degree*(PI/180.0);
-	if(LR>0){Larcdist=degree*(radius+6.0); Rarcdist=degree*(radius-6.0); Lmult=(radius+6.0); Rmult=(radius-6); }///DEtermine if left side or right side is travelling shorter or longer dist
-	else {Larcdist=degree*(radius-6.0); Rarcdist=degree*(radius+6.0);Lmult=(radius-6.0); Rmult=(radius+6);}
-	float ArcMult=Larcdist/Rarcdist;
-	Larcdist= (Larcdist*261.33)/(4.0*3.1415);///Change 261 (IME Turbo) for 360 for external Motor controllers
-	Rarcdist= (Rarcdist*261.33)/(4.0*3.1415);///Change 261 (IME Turbo) for 360 for external Motor controllers
+	if(LR>0){Larcdist=degree*(radius+6.0); Rarcdist=degree*(radius-6.0); Lmult=(radius+6.0); Rmult=(radius-6.0); }///DEtermine if left side or right side is travelling shorter or longer dist
+	else {Larcdist=degree*(radius-6.0); Rarcdist=degree*(radius+6.0);Lmult=(radius-6.0); Rmult=(radius+6.0);}
+	Larcdist= (Larcdist*261.33)/(4.1*PI);///Change 261 (IME Turbo) for 360 for external Motor controllers
+	Rarcdist= (Rarcdist*261.33)/(4.1*PI);///Change 261 (IME Turbo) for 360 for external Motor controllers
 	//Lmult=(Larcdist/Rarcdist); Rmult=(Rarcdist/Larcdist);
 	//if (Lmult>1){Lmult=Lmult/3; Rmult=Rmult*3;}
 	//  else{Lmult=Lmult*3; Rmult=Rmult/3;}

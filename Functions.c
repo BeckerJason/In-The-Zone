@@ -206,7 +206,7 @@ void T(float degree, float vel)
 
 	if (degree<0){dir=-1;}
 	else{dir=1;}//
-	degree=degree*9.2;//Correction factor for this specific gyro
+	degree=degree*9.29;//Correction factor for this specific gyro
 
 	while(abs(SensorValue[in1])>(abs(degree)+10)||abs(SensorValue[in1])<(abs(degree)-10) && time1[T1]<2500)
 	{
@@ -251,138 +251,6 @@ void T(float degree, float vel)
 	motor[leftDriveFrontMID]=0;
 }
 
-
-
-
-
-
-
-
-void ArcT(float degree, float radius, char FBD, char LRD)
-{clearTimer(T1);
-	SensorValue[Rencoder]=0;
-	SensorValue[Lencoder]=0;
-	SensorValue[gyro]=0;
-	//90 degrees
-
-	float xL, xR, speedL, speedR;
-	float Larcdist, Rarcdist,LR,dir,Loffset, Roffset,speed, Rmult, Lmult; //LeftRight, Forward Backward
-
-	if (LRD=='L' ||LRD=='l'){LR=-1;}
-	else{LR=1;}//
-
-	if (FBD=='F'||FBD=='f'){dir=1;}
-	else{dir=-1;}
-	degree=degree*(PI/180);
-	if(LR<0){Larcdist=degree*(radius+6); Rarcdist=degree*(radius-6); Lmult=0.75; Rmult=2; }///DEtermine if left side or right side is travelling shorter or longer dist
-	else {Larcdist=degree*(radius-6); Rarcdist=degree*(radius+6); Lmult=2; Rmult=0.75;}
-	float ArcMult=Larcdist/Rarcdist;
-	Larcdist= (Larcdist*261.33)/(4*3.1415);///Change 261 (IME Turbo) for 360 for external Motor controllers
-	Rarcdist= (Rarcdist*261.33)/(4*3.1415);///Change 261 (IME Turbo) for 360 for external Motor controllers
-
-	while (time1[T1]<2000&&(abs(SensorValue[Lencoder])<Larcdist||abs(SensorValue[Rencoder])<Rarcdist))
-	{
-		//if (abs(SensorValue[Rencoder])<abs(SensorValue[Lencoder])){Loffset=dir*10; Roffset=0;}
-		//else if (abs(SensorValue[Lencoder])<abs(SensorValue[Rencoder])){Loffset=0; Roffset=-dir*10;}
-		//else{Loffset=0; Roffset=0;}
-
-		xL=(Larcdist-abs(SensorValue[Lencoder]));
-		xR=(Rarcdist-abs(SensorValue[Rencoder]));
-		speedL=(-35)*cos(16*abs(xL)/(abs(Larcdist)*3.14)+5.75)+30;//vel;
-		speedR=(-35)*cos(16*abs(xR)/(abs(Rarcdist)*3.14)+5.75)+30;//vel;
-		speedL=dir*speedL*Rmult;
-		speedR=dir*speedR*Lmult;
-
-		if ((abs(SensorValue[Rencoder])*ArcMult)<(abs(SensorValue[Lencoder]))){Loffset=-speedL/5; Roffset=0;}
-		else if (abs(SensorValue[Lencoder])<(abs(SensorValue[Rencoder])*ArcMult)){Loffset=0; Roffset=-speedR/5;}
-		else{Loffset=0; Roffset=0;}
-		motor[rightDriveBack]=speedR+Roffset;
-		motor[powerCD]=speedR+Roffset;
-		motor[rightDriveFrontMID]=speedR+Roffset;
-		motor[leftDriveBack]=speedL+Loffset;
-		motor[powerAB]=speedL+Loffset;
-		motor[leftDriveFrontMID]=speedL+Loffset;
-
-	}
-	motor[rightDriveBack]=0;
-	motor[powerCD]=0;
-	motor[rightDriveFrontMID]=0;
-	motor[leftDriveBack]=0;
-	motor[powerAB]=0;
-	motor[leftDriveFrontMID]=0;
-}
-
-
-
-
-
-void L(int val)
-{
-	SensorValue[piston]=val;
-}
-
-
-void Test(float dist, int MobileGoal)
-{SensorValue[Rencoder]=0;
-	SensorValue[Lencoder]=0;
-	dist= (dist*261.33)/(4*3.14);///Change 261 (IME Turbo) for 360 for external Motor controllers
-
-	float x;
-	//int q=0;
-	float dir,Loffset, Roffset,speed;
-
-	if (dist<0){dir=-1;}
-	else{dir=1;}//
-
-	//while(q<2)
-	//{
-	//wait1Msec(100);
-	clearTimer(T1);
-	while( time1[T1]<3500 && (abs(SensorValue[Lencoder])<(abs(dist))   )/*&&abs(SensorValue[gyro])!=(abs(dist)-50)*/)
-	{
-		x=abs(dist)-abs(SensorValue[Lencoder]);
-		//if (x<0){dir=-1; x=-x;}
-		//else{dir=1;}
-		//
-		//if (x<0){dir=1:}
-		//else{dir=-1;}
-
-		//if ((pow(x,2))%127>0){speed=-dir*127;}//-127cos(pow((x/57),2)+(127/2)
-		//	else{speed=-dir*pow(x,2);}
-		speed=(-35)*cos(16*abs(x)/(abs(dist)*3.14)+5.75)+30;//vel;
-		speed=dir*speed;
-
-		if (abs(SensorValue[Rencoder])<(abs(SensorValue[Lencoder]))){Loffset=-speed/5; Roffset=0;}
-		else if (abs(SensorValue[Lencoder])<(abs(SensorValue[Rencoder]))){Loffset=0; Roffset=-speed/5;}
-		else{Loffset=0; Roffset=0;}
-
-		//	writeDebugStreamLine("%f, %f", speed,x);
-		motor[rightDriveBack]=speed+Roffset;
-		motor[powerCD]=speed+Roffset;
-		motor[rightDriveFrontMID]=speed+Roffset;
-		motor[leftDriveBack]=speed+Loffset;
-		motor[powerAB]=speed+Loffset;
-		motor[leftDriveFrontMID]=speed+Loffset;
-		wait1Msec(2);
-	}
-	if (MobileGoal==0)
-	{motor[rightDriveBack]=dir*50/2;
-		motor[powerCD]=dir*50/2;
-		motor[rightDriveFrontMID]=dir*50/2;
-		motor[leftDriveBack]=dir*50/2;
-		motor[powerAB]=dir*50/2;
-		motor[leftDriveFrontMID]=dir*50/2;
-		//q++;
-		wait1Msec(100);
-	}
-	else{}
-	motor[rightDriveBack]=0;
-	motor[powerCD]=0;
-	motor[rightDriveFrontMID]=0;
-	motor[leftDriveBack]=0;
-	motor[powerAB]=0;
-	motor[leftDriveFrontMID]=0;
-}
 
 void Motors(float speed, int time)
 {
@@ -530,4 +398,20 @@ task PistonUpAuto()
 	SensorValue[piston]=1;
 
 	stopTask(PistonUp);
+}
+
+task POTStall()
+{while(1)
+{if(SensorValue[POT]<850){motor[ConeGrab]=10;}
+else if(SensorValue[POT]>1000){motor[ConeGrab]=-10;}
+else{motor[ConeGrab]=0;}
+wait1Msec(20);
+}
+}
+task POTTop()
+{while(SensorValue[POT]<850){motor[ConeGrab]=90;wait1Msec(20);}
+while(SensorValue[POT]>1000){motor[ConeGrab]=-90;wait1Msec(20);}
+motor[ConeGrab]=0;
+startTask(POTStall);
+stopTask(POTTop);
 }

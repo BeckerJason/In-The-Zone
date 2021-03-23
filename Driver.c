@@ -121,7 +121,7 @@ if(vexRT[Btn8R]==1)
 //if(vexRT[Btn6U]==1)
 //	startTask(throw);
 if(vexRT[Btn7L]==1)
-{SensorValue[Claw]=0
+{SensorValue[Claw]=0;
 	motor[ConeGrab]=-90;
 	}
 
