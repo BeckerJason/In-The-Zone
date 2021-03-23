@@ -10,7 +10,7 @@ M(28,50,1);
 wait1Msec(800);
 SensorValue[Claw]=1;
 motor[ConeGrab]=127;
-wait1Msec(500);
+wait1Msec(400);
 startTask(PistonUpAuto);//Second MID MG RIGHT pickup
 wait1Msec(300);
 motor[ConeGrab]=0;

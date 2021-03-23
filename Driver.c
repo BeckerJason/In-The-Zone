@@ -118,11 +118,14 @@ if(vexRT[Btn8R]==1)
 		SensorValue[piston]=1;
 }
 
-if(vexRT[Btn6U]==1)
-	startTask(throw);
-//if(vexRT[Btn7D]==1)
-//{motor[ConeGrab]=90;}
+//if(vexRT[Btn6U]==1)
+//	startTask(throw);
+if(vexRT[Btn7L]==1)
+{SensorValue[Claw]=0
+	motor[ConeGrab]=-90;
+	}
 
-//else if(vexRT[Btn7U]==1)
-//{motor[ConeGrab]=-90;}
-//else{motor[ConeGrab]=0;}
+else if(vexRT[Btn7R]==1)
+{SensorValue[Claw]=1;
+	motor[ConeGrab]=90;}
+else{motor[ConeGrab]=0;}
