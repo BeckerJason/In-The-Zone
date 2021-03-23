@@ -88,7 +88,7 @@ initial.yval=0.75;
 	else{}
 	if(vexRT[Btn7U]==1)
 	{
-	MoveToPosition(1,3,127,127,20,0);
+	MoveToPosition(1,2,127,127,20,0);
 	MoveToPosition(4,1,127,127,20,0);
 }
 else{}

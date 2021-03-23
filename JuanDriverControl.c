@@ -3,8 +3,8 @@ int bL,	bR,	l, cp, cm, mg, c, as;
 //#### DRIVE BASE ########################################################################
 if(vexRT[Ch3] > 15 || vexRT[Ch4] > 15 || vexRT[Ch3] < -15 || vexRT[Ch4] < -15) //JOYSTICK DEADBAND
 {
-	bL = vexRT[Ch3]*pm + vexRT[Ch4]*pm;		//Base Left Side
-	bR = vexRT[Ch3]*pm- vexRT[Ch4]*pm;		//Base Right Side
+	bL = vexRT[Ch3]*pr.mult + vexRT[Ch4]*pr.mult;		//Base Left Side
+	bR = vexRT[Ch3]*pr.mult- vexRT[Ch4]*pr.mult;		//Base Right Side
 }
 else
 {
@@ -13,16 +13,27 @@ else
 }
 //#########################################################################################
 
+
+
+
+
+
+
+
 //~~~~ LIFT VALUES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if(vexRT[Ch2] > 15 || vexRT[Ch2] < -15)
 {
-	l = vexRT[Ch2]*sm; //Lift Motors
+	l = vexRT[Ch2]*se.mult; //Lift Motors
 }
 else
 {
 	l =0;	//Stop Lift Motors
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
 
 //++++ CLAW ARM PRESETS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /*if (vexRT[Btn7U]==1)
@@ -39,33 +50,44 @@ cp=1;			//Claw Preset Down*/
 cp=0; //TEMPORARY FOR CLAW PRESET
 if (vexRT[Btn6U]==1&&vexRT[Btn6D]==0)
 {
-	cm=127*pm;
+	cm=127*pr.mult;
 }
 else if (vexRT[Btn6D]==1&&vexRT[Btn6U]==0)
 {
-	cm=-127*pm;
+	cm=-127*pr.mult;
 }
 else
 {
-	cm=10*pm;
+	cm=10*pr.mult;
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
 
 
 //@@@@ MOBILE GOAL @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 if (vexRT[Btn8D]==1&&vexRT[Btn8R]==0)
 {
-	mg=127*pm; //Mobile Goal Up
+	mg=127*pr.mult; //Mobile Goal Up
 }
 else if (vexRT[Btn8R]==1&&vexRT[Btn8D]==0)
 {
-	mg=-127*pm; //Mobile Goal Down
+	mg=-127*pr.mult; //Mobile Goal Down
 }
 else
 {
-	mg=15*pm;		//Value To Keep Mobile Goal Back
+	mg=15*pr.mult;		//Value To Keep Mobile Goal Back
 }
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+
+
 
 //#### CLAW############################################################
 if (vexRT[Btn5U]==1){c=1;} //Claw Close
@@ -74,6 +96,8 @@ else{c=0;}//Claw Open
 //$$$ AUTO STACK $$$$$$$$$$$$$$$$$$$$
 if(vexRT[Btn8L]==1)
 {as=1;}
+else if (vexRT[Btn7L]==1)
+{as=2;}
 else {as=0;}
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -83,14 +107,19 @@ if (SensorValue[Climit]==1)
 
 //if (vexRT
 
-if (as>0)
-{D(	0,	0,	0, 0, -15, 0, as, pm,sm); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
-	if(record==1){writeDebugStreamLine("D(%d, %d, %d, %d, %d, %d, %d, pm, sm);",	0,	0,	0,  0,0, 0, as);}
-	else{}
-}
-else
+if (as==1)
 {
-	D(	bL,	bR,	l,cm, mg, c, as,pm,sm); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
-	if(record==1){writeDebugStreamLine("D(%d, %d, %d, %d, %d, %d, %d, pm, sm);",	bL,	bR,	l, cm, mg, c, as);}
+	DS(); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+	if(record==1){writeDebugStreamLine("DS();");}
 	else{}
 }
+else if(as==2)
+{PL();
+	if(record==1){writeDebugStreamLine("PL();");}
+		}
+	else
+	{
+		D(	bL,	bR,	l,cm, mg, c); 				//Base Left Side, Base Right Side, Lift Motors, Claw Preset, Claw Motor, Mobile Goal, Claw
+		if(record==1){writeDebugStreamLine("D(%d, %d, %d, %d, %d, %d);",	bL,	bR,	l, cm, mg, c);}
+		else{}
+	}
