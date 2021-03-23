@@ -19,18 +19,18 @@ void D(	int bL,int	bR,int	l,int cm,int mg,int c)
 	{}
 	else if(abs(SensorValue[I2C_1])>abs(SensorValue[I2C_2])+5)
 	{
-		motor[leftArm1] = l*pr.mult*.8;
-		motor[rightArm1] = l*pr.mult;
+		motor[leftArm1] = l*se.mult*.8;
+		motor[rightArm1] = l*se.mult;
 	}
 	else if(abs(SensorValue[I2C_2])<abs(SensorValue[I2C_1])-5)
 	{
-		motor[leftArm1] = l*pr.mult;
-		motor[rightArm1] = l*pr.mult*.8;
+		motor[leftArm1] = l*se.mult;
+		motor[rightArm1] = l*se.mult*.8;
 	}
 	else
 	{
-		motor[leftArm1] = l*pr.mult;
-		motor[rightArm1] = l*pr.mult;
+		motor[leftArm1] = l*se.mult;
+		motor[rightArm1] = l*se.mult;
 	}
 	//motor[leftArm1] = l;
 	//motor[leftArm2] = l;
@@ -38,8 +38,8 @@ void D(	int bL,int	bR,int	l,int cm,int mg,int c)
 	//motor[rightArm2] = l;
 	if (mobi.val==0&&mobi.stack==0)
 	{
-		motor[fb1]=cm;
-		motor[fb2]=cm;
+		motor[fb1]=cm*pr.mult;
+		motor[fb2]=cm*pr.mult;
 	}
 	else{}
 	//motor[MG]=mg;
@@ -67,8 +67,8 @@ void L(int count,int l,int lim)
 {if (lim==1)
 	{while (SensorValue[limit]==0)
 		{l=-l;
-			motor[leftArm1] = l*pr.mult;
-			motor[rightArm1] = l*pr.mult;
+			motor[leftArm1] = l*se.mult;
+			motor[rightArm1] = l*se.mult;
 		}
 	}
 	else
@@ -77,47 +77,47 @@ void L(int count,int l,int lim)
 		{
 			if(abs(SensorValue[Rarm])>abs(SensorValue[Larm])+5)
 			{
-				motor[leftArm1] = l*pr.mult*.8;
-				motor[rightArm1] = l*pr.mult;
+				motor[leftArm1] = l*se.mult*.8;
+				motor[rightArm1] = l*se.mult;
 			}
 			else if(abs(SensorValue[Larm])<abs(SensorValue[Rarm])-5)
 			{
-				motor[leftArm1] = l*pr.mult;
-				motor[rightArm1] = l*pr.mult*.8;
+				motor[leftArm1] = l*se.mult;
+				motor[rightArm1] = l*se.mult*.8;
 			}
 			else
 			{
-				motor[leftArm1] = l*pr.mult;
-				motor[rightArm1] = l*pr.mult;
+				motor[leftArm1] = l*se.mult;
+				motor[rightArm1] = l*se.mult;
 		}}
 		while(abs(SensorValue[Rarm])>count)
 		{
 			if(abs(SensorValue[Rarm])<abs(SensorValue[Larm])+5)
 			{
-				motor[leftArm1] = l*pr.mult*.8;
-				motor[rightArm1] = l*pr.mult;
+				motor[leftArm1] = l*se.mult*.8;
+				motor[rightArm1] = l*se.mult;
 			}
 			else if(abs(SensorValue[Larm])>abs(SensorValue[Rarm])-5)
 			{
-				motor[leftArm1] = l*pr.mult;
-				motor[rightArm1] = l*pr.mult*.8;
+				motor[leftArm1] = l*se.mult;
+				motor[rightArm1] = l*se.mult*.8;
 			}
 			else
 			{
-				motor[leftArm1] = l*pr.mult;
-				motor[rightArm1] = l*pr.mult;
+				motor[leftArm1] = l*se.mult;
+				motor[rightArm1] = l*se.mult;
 		}}
 	}
-	motor[leftArm1] = 30*pr.mult;
-	motor[rightArm1] = 30*pr.mult;
+	motor[leftArm1] = 30*se.mult;
+	motor[rightArm1] = 30*se.mult;
 }
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ LIFT DISTANCE @@@@@@@@@@@@@@@@@@@@
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ LIFT POWER $$$$$$$$$$$$$$$$$$$$$$$
 void liftCont(int power)
 {
-	motor[leftArm1] = power;
-	motor[rightArm1] = power;
+	motor[leftArm1] = power*se.mult;
+	motor[rightArm1] = power*se.mult;
 }
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ LIFT POWER $$$$$$$$$$$$$$$$$$$$$$$
 
@@ -193,9 +193,9 @@ void liftCont(int power)
 //------------------------------------------------------------------------ PRE-LOAD -------------------------
 void PL(int cones)
 {cones=cones+1;
-	SensorValue[Rarm]=0;
 	for(int count=0;count<cones&&vexRT[Btn5D]==0;count++)
-	{	motor[roller]=-25;
+	{
+		motor[roller]=-25;
 		motor[LM] = 0;
 		motor[L1] = 0;
 		motor[RM] = 0;
@@ -213,23 +213,23 @@ void PL(int cones)
 
 		while(SensorValue[IR] ==0&&vexRT[Btn5D]==0) ///while the robot sees a cone
 		{
-			motor[leftArm1] = 127*pr.mult;	///Bring lift up
-			motor[rightArm1] =127*pr.mult;
+			motor[leftArm1] = 127*se.mult;	///Bring lift up
+			motor[rightArm1] =127*se.mult;
 		}
 
-		motor[leftArm1] = 15*pr.mult;  //Keep lift up
-		motor[rightArm1] =15*pr.mult;
+		motor[leftArm1] = 15*se.mult;  //Keep lift up
+		motor[rightArm1] =15*se.mult;
 
 		while (SensorValue[Climit]==0&&vexRT[Btn5D]==0)
 		{
 			motor[fb1]=127*pr.mult;/////Bring 4 bar up
 			motor[fb2]=127*pr.mult;
 		}
-		motor[MG]=-5;
+		motor[MG]=-5*pr.mult;
 		motor[fb1]=15*pr.mult;		//Keep 4 bar up
 		motor[fb2]=15*pr.mult;
-		motor[leftArm1] = -30*pr.mult;	//Bring Lift down to stack cone
-		motor[rightArm1] =-30*pr.mult;
+		motor[leftArm1] = -30*se.mult;	//Bring Lift down to stack cone
+		motor[rightArm1] =-30*se.mult;
 
 		if (count!=cones-1)
 		{
@@ -239,34 +239,32 @@ void PL(int cones)
 			while(SensorValue[IR] ==0&&vexRT[Btn5D]==0)
 			{
 				motor[roller]=127; //Roll cone out
-				motor[leftArm1] = 80*se.mult;	//Bring Lift up while rolling cone out
-				motor[rightArm1] =80*se.mult;
+				motor[leftArm1] = 115*se.mult;	//Bring Lift up while rolling cone out
+				motor[rightArm1] =115*se.mult;
 			}
-			motor[leftArm1] = 30*pr.mult;  //Keep lift up
-			motor[rightArm1] =30*pr.mult;
+			motor[leftArm1] = 30*se.mult;  //Keep lift up
+			motor[rightArm1] =30*se.mult;
 			motor[fb1]=-127*pr.mult;/////Bring 4 bar down before bringing lift down
 			motor[fb2]=-127*pr.mult;
-			wait1Msec(400);
-			motor[fb1]=-20*pr.mult;/////Bring 4 bar down before bringing lift down
-			motor[fb2]=-20*pr.mult;
-			while (abs(SensorValue[Rarm])>120&&vexRT[Btn5D]==0)
+			wait1Msec(300);
+			motor[fb1]=0*pr.mult;/////Bring 4 bar down before bringing lift down
+			motor[fb2]=0*pr.mult;
+			while (SensorValue[limit]==0&&vexRT[Btn5D]==0)
 			{
-				motor[leftArm1] = -30*pr.mult;	//Bring Lift down to pick up next cone
-				motor[rightArm1] =-30*pr.mult;
+				motor[leftArm1] = -40*se.mult;	//Bring Lift down to pick up next cone          was -20
+				motor[rightArm1] =-40*se.mult;
 				motor[roller]=-127; //Roll cone in
 			}
-			motor[leftArm1] = 30;
-			motor[rightArm1] =30;
-					motor[leftArm1] = 0;	//kill all
-		motor[rightArm1] =0;
-			wait1Msec(100);
+			motor[leftArm1] = 0;
+			motor[rightArm1] =0;
+			motor[roller]=-25; //Roll cone in
+			wait1Msec(200);
 		}
 		motor[MG]=0;
-		//motor[leftArm1] = 0;	//kill all
-		//motor[rightArm1] =0;
-	}
 		motor[leftArm1] = 0;	//kill all
 		motor[rightArm1] =0;
+	}
+
 }
 //------------------------------------------------------------------------ PRE-LOAD -------------------------
 
@@ -310,7 +308,7 @@ void M(int dist,int dir,int speed) //encoder count, direction , speed, primary v
 		motor[L1] = -speed*se.mult/4;
 		motor[RM] = -speed*se.mult/4;
 		motor[R1] = -speed*se.mult/4;
-		wait1Msec(100);
+		wait1Msec(50);
 	}
 
 	else if (dir==-1)
@@ -342,11 +340,11 @@ void M(int dist,int dir,int speed) //encoder count, direction , speed, primary v
 			}
 
 		}
-		motor[LM] = speed*pr.mult/4;
-		motor[L1] = speed*pr.mult/4;
-		motor[RM] = speed*pr.mult/4;
-		motor[R1] = speed*pr.mult/4;
-		wait1Msec(100);
+		motor[LM] = speed*se.mult/4;
+		motor[L1] = speed*se.mult/4;
+		motor[RM] = speed*se.mult/4;
+		motor[R1] = speed*se.mult/4;
+		wait1Msec(50);
 	}
 	else{}
 	motor[LM] = 0;
@@ -615,3 +613,11 @@ motor[RM]=0;
 motor[LM]=0;
 motor[L1]=0;
 }*/
+
+void Roll(string val)
+{if (val == "in"){}
+	else if(val=="out"){}
+	else if (val=="hold"){}
+	else if (val=="stoproll"){}
+	else{}
+}
