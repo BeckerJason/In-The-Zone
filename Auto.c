@@ -19,7 +19,7 @@ while ( alliance == 0 ) // BEGING BLUE ALLIANCE CODE
 	}
 	while ( autonomousN == 4 ) // BEGIN AUTONOMOUS 5 CODE
 	{
-		BlueAuto5 ( );
+		//BlueAuto5 ( );
 	}
 	// END BLUE ALLIANCE CODE
 }
@@ -43,7 +43,7 @@ while ( alliance == 1 ) //  BEGIN RED ALLIANCE CODE
 	}
 	while ( autonomousN == 4 ) // BEGIN AUTONOMOUS 5 CODE
 	{
-		RedAuto5 ( ) ;
+		//RedAuto5 ( ) ;
 	}
 	// END RED ALLIANCE CODE
 }

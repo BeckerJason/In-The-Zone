@@ -57,11 +57,9 @@ int state = 0;
 #include "BlueAuto2.c"
 #include "BlueAuto3.c";
 #include "BlueAuto4.c";
-#include "BlueAuto5.c";
 #include "RedAuto1.c"
 #include "RedAuto2.c"
 #include "RedAuto3.c"
-#include "RedAuto5.c"
 
 void pre_auton()
 {
