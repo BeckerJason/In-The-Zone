@@ -413,3 +413,33 @@ motor[ConeGrab]=0;
 startTask(POTStall);
 stopTask(POTTop);
 }
+
+void RLineTrack(float vel)
+{SensorValue[Lencoder]=0;
+	SensorValue[Rencoder]=0;
+	float speed,Loffset, Roffset,dir;
+	if (vel>0){dir=1;}
+	else{dir=-1;}
+	while (SensorValue[RLine]>1000)
+{
+		speed=dir*vel*se.mult;
+
+		if ((abs(SensorValue[Rencoder])<abs(SensorValue[Lencoder]))){Loffset=-dir*5; Roffset=0;}
+		else if ((abs(SensorValue[Lencoder])<abs(SensorValue[Rencoder]))){Loffset=0; Roffset=-dir*5;}
+		else{Loffset=0; Roffset=0;}
+
+		writeDebugStreamLine("%d, %d", Loffset, Roffset);
+		motor[rightDriveBack]=speed+Roffset;
+		motor[powerCD]=speed+Roffset;
+		motor[rightDriveFrontMID]=speed+Roffset;
+		motor[leftDriveBack]=speed+Loffset;
+		motor[powerAB]=speed+Loffset;
+		motor[leftDriveFrontMID]=speed+Loffset;
+	}
+		motor[rightDriveBack]=0;
+	motor[powerCD]=0;
+	motor[rightDriveFrontMID]=0;
+	motor[leftDriveBack]=0;
+	motor[powerAB]=0;
+	motor[leftDriveFrontMID]=0;
+}
